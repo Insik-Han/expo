@@ -18,6 +18,7 @@ import { parsePlatformHeader } from './resolvePlatform';
 import type { ServerNext, ServerRequest, ServerResponse } from './server.types';
 import { isEnableHermesManaged } from '../../../export/exportHermes';
 import * as Log from '../../../log';
+import { getActorDisplayName, getUserAsync } from '../../../api/user/user';
 import { env } from '../../../utils/env';
 import * as ProjectDevices from '../../project/devices';
 import type { UrlCreator } from '../UrlCreator';
@@ -110,10 +111,15 @@ export abstract class ManifestMiddleware<
 
     const isHermesEnabled = isEnableHermesManaged(projectConfig.exp, platform);
 
+    // Resolve the signed-in CLI user to pass through the manifest
+    const user = await getUserAsync();
+    const username = getActorDisplayName(user);
+
     // Create the manifest and set fields within it
     const expoGoConfig = this.getExpoGoConfig({
       mainModuleName,
       hostname,
+      username: username !== 'anonymous' ? username : undefined,
     });
 
     const hostUri = this.options.constructUrl({ scheme: '', hostname });
@@ -229,9 +235,11 @@ export abstract class ManifestMiddleware<
   private getExpoGoConfig({
     mainModuleName,
     hostname,
+    username,
   }: {
     mainModuleName: string;
     hostname?: string | null;
+    username?: string;
   }): ExpoGoConfig {
     return {
       // localhost:8081
@@ -247,6 +255,8 @@ export abstract class ManifestMiddleware<
       },
       // Indicates the name of the main bundle.
       mainModuleName,
+      // The signed-in CLI username, used by Expo Go to verify account match.
+      ...(username ? { username } : undefined),
     };
   }
 
