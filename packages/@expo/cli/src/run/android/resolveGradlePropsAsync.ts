@@ -1,6 +1,7 @@
 import path from 'path';
 
-import { Device, getDeviceABIsAsync } from '../../start/platforms/android/adb';
+import type { Device } from '../../start/platforms/android/adb';
+import { getDeviceABIsAsync } from '../../start/platforms/android/adb';
 import { CommandError } from '../../utils/errors';
 
 // Supported ABIs for Android. see https://developer.android.com/ndk/guides/abis
@@ -53,7 +54,7 @@ export async function resolveGradlePropsAsync(
 
   let apkVariantDirectory: string;
   if (parts.length > 0) {
-    const flavorPath = parts[0].toLowerCase() + parts.slice(1).join('');
+    const flavorPath = parts[0]!.toLowerCase() + parts.slice(1).join('');
     apkVariantDirectory = path.join(apkDirectory, flavorPath, buildType);
   } else {
     apkVariantDirectory = path.join(apkDirectory, buildType);

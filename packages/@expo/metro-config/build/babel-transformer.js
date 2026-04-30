@@ -4,11 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_assert_1 = __importDefault(require("node:assert"));
-const path_1 = __importDefault(require("path"));
-const resolve_from_1 = __importDefault(require("resolve-from"));
 const loadBabelConfig_1 = require("./loadBabelConfig");
 const transformSync_1 = require("./transformSync");
 const getPkgVersion_1 = require("./utils/getPkgVersion");
+const transitiveResolveFrom_1 = require("./utils/transitiveResolveFrom");
 const debug = require('debug')('expo:metro-config:babel-transformer');
 function isCustomTruthy(value) {
     return String(value) === 'true';
@@ -29,11 +28,17 @@ const memoizeWarning = memoize((message) => {
     debug(message);
 });
 function getIsHermesV1(projectRoot) {
-    const reactNativePath = resolve_from_1.default.silent(projectRoot, 'react-native/package.json');
-    if (!reactNativePath)
-        return false;
-    const hermesVersion = (0, getPkgVersion_1.getPkgVersion)(path_1.default.dirname(reactNativePath), 'hermes-compiler');
-    return typeof hermesVersion === 'string' && hermesVersion.startsWith('250829098');
+    const hermesCompilerPackageJsonPath = (0, transitiveResolveFrom_1.transitiveResolveFrom)(projectRoot, [
+        'react-native/package.json',
+        'hermes-compiler/package.json',
+    ]);
+    if (!hermesCompilerPackageJsonPath) {
+        return true;
+    }
+    const hermesVersion = (0, getPkgVersion_1.getPkgVersionFromPath)(hermesCompilerPackageJsonPath);
+    // hermes-compiler versions 250829098.x are Hermes V1, while 0.1.x are legacy Hermes.
+    const isLegacyHermes = typeof hermesVersion === 'string' && hermesVersion.startsWith('0.1');
+    return !isLegacyHermes;
 }
 function getBabelCaller({ filename, options, }) {
     const isNodeModule = filename.includes('node_modules');
@@ -98,6 +103,7 @@ function getBabelCaller({ filename, options, }) {
         isLoaderBundle: isCustomTruthy(options.customTransformOptions?.isLoaderBundle)
             ? true
             : undefined,
+        isDomComponent: options.customTransformOptions?.dom != null ? true : undefined,
         // This is picked up by `babel-preset-expo` if it's set, and overrides the minimum supported
         // `@babel/runtime` version that `@babel/plugin-transform-runtime` can assume is installed
         // This option should be set to the project's version of `@babel/runtime`, if it's installed directly
@@ -112,6 +118,7 @@ const transform = ({ filename, src, options,
 plugins, }) => {
     const OLD_BABEL_ENV = process.env.BABEL_ENV;
     process.env.BABEL_ENV = options.dev ? 'development' : process.env.BABEL_ENV || 'production';
+    const { enableBabelRCLookup = true } = options;
     try {
         const babelConfig = {
             // ES modules require sourceType='module' but OSS may not always want that
@@ -130,7 +137,8 @@ plugins, }) => {
             highlightCode: true,
             // Load the project babel config file.
             ...(0, loadBabelConfig_1.loadBabelConfig)(options),
-            babelrc: typeof options.enableBabelRCLookup === 'boolean' ? options.enableBabelRCLookup : true,
+            babelrc: enableBabelRCLookup,
+            ...(enableBabelRCLookup === false && { configFile: false }),
             plugins,
             // NOTE(EvanBacon): We heavily leverage the caller functionality to mutate the babel config.
             // This compensates for the lack of a format plugin system in Metro. Users can modify the
@@ -153,7 +161,15 @@ plugins, }) => {
         return { ast: result.ast, metadata: result.metadata };
     }
     finally {
-        if (OLD_BABEL_ENV) {
+        // Restore the old process.env.BABEL_ENV
+        if (OLD_BABEL_ENV != null) {
+            // We have to treat this as a special case because writing undefined to
+            // an environment variable coerces it to the string 'undefined'. To
+            // unset it, we must delete it.
+            // See https://github.com/facebook/metro/pull/446
+            delete process.env.BABEL_ENV;
+        }
+        else {
             process.env.BABEL_ENV = OLD_BABEL_ENV;
         }
     }

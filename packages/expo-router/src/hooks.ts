@@ -1,20 +1,22 @@
 'use client';
 
-import { NavigationProp, useNavigation, useStateForPath } from '@react-navigation/native';
 import type { LoaderFunction } from 'expo-server';
 import React, { use, useMemo } from 'react';
 
 import { LocalRouteParamsContext, useContextKey } from './Route';
 import { INTERNAL_SLOT_NAME } from './constants';
-import { getRouteInfoFromState } from './global-state/routeInfo';
+import { getRouteInfoFromState } from './global-state/getRouteInfoFromState';
 import { store, useRouteInfo } from './global-state/router-store';
-import { router, Router } from './imperative-api';
+import type { Router } from './imperative-api';
+import { router } from './imperative-api';
 import { usePreviewInfo } from './link/preview/PreviewRouteContext';
 import { LoaderCacheContext } from './loaders/LoaderCache';
 import { ServerDataLoaderContext } from './loaders/ServerDataLoaderContext';
 import { getLoaderData } from './loaders/getLoaderData';
 import { fetchLoader } from './loaders/utils';
-import { RouteParams, RouteSegments, UnknownOutputParams, Route } from './types';
+import type { NavigationProp, NavigationState } from './react-navigation/native';
+import { useNavigation, useStateForPath } from './react-navigation/native';
+import type { RouteParams, RouteSegments, UnknownOutputParams, Route } from './types';
 import { getSingularId } from './useScreens';
 
 export { useRouteInfo };
@@ -34,7 +36,7 @@ export { useRouteInfo };
  * }
  * ```
  */
-export function useRootNavigationState() {
+export function useRootNavigationState(): NavigationState {
   const parent =
     // We assume that this is called from routes in __root
     // Users cannot customize the generated Sitemap or NotFound routes, so we should be safe

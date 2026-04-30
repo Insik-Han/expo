@@ -3,7 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.hasModule = hasModule;
 exports.getBundler = getBundler;
 exports.getPlatform = getPlatform;
 exports.getPossibleProjectRoot = getPossibleProjectRoot;
@@ -15,6 +14,7 @@ exports.getIsNodeModule = getIsNodeModule;
 exports.getBaseUrl = getBaseUrl;
 exports.getReactCompiler = getReactCompiler;
 exports.getIsServer = getIsServer;
+exports.getIsDomComponent = getIsDomComponent;
 exports.getIsLoaderBundle = getIsLoaderBundle;
 exports.getIsHermesV1 = getIsHermesV1;
 exports.getMetroSourceType = getMetroSourceType;
@@ -27,17 +27,6 @@ exports.toPosixPath = toPosixPath;
 // @ts-expect-error: missing types
 const helper_module_imports_1 = require("@babel/helper-module-imports");
 const node_path_1 = __importDefault(require("node:path"));
-function hasModule(name) {
-    try {
-        return !!require.resolve(name);
-    }
-    catch (error) {
-        if (error.code === 'MODULE_NOT_FOUND' && error.message.includes(name)) {
-            return false;
-        }
-        throw error;
-    }
-}
 /** Determine which bundler is being used. */
 function getBundler(caller) {
     assertExpoBabelCaller(caller);
@@ -119,6 +108,10 @@ function getReactCompiler(caller) {
 function getIsServer(caller) {
     assertExpoBabelCaller(caller);
     return caller?.isServer ?? false;
+}
+function getIsDomComponent(caller) {
+    assertExpoBabelCaller(caller);
+    return caller?.isDomComponent ?? false;
 }
 function getIsLoaderBundle(caller) {
     assertExpoBabelCaller(caller);
@@ -209,3 +202,4 @@ const REGEXP_REPLACE_SLASHES = /\\/g;
 function toPosixPath(filePath) {
     return filePath.replace(REGEXP_REPLACE_SLASHES, '/');
 }
+//# sourceMappingURL=common.js.map

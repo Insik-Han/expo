@@ -306,6 +306,8 @@ internal struct ClipShapeModifier: ViewModifier, Record {
       content.clipShape(makeCapsule(style: roundedCornerStyle))
     case .circle:
       content.clipShape(Circle())
+    case .containerRelativeShape:
+      content.clipShape(ContainerRelativeShape())
     case .ellipse:
       content.clipShape(Ellipse())
     case .rectangle:
@@ -526,6 +528,8 @@ internal struct MaskModifier: ViewModifier, Record {
       content.mask(makeCapsule(style: roundedCornerStyle))
     case .circle:
       content.mask(Circle())
+    case .containerRelativeShape:
+      content.mask(ContainerRelativeShape())
     case .ellipse:
       content.mask(Ellipse())
     case .rectangle:
@@ -982,14 +986,6 @@ internal struct LineSpacing: ViewModifier, Record {
     } else {
       content
     }
-  }
-}
-
-internal struct LineLimitModifier: ViewModifier, Record {
-  @Field var limit: Int?
-
-  func body(content: Content) -> some View {
-    content.lineLimit(limit)
   }
 }
 
@@ -1826,6 +1822,14 @@ extension ViewModifierRegistry {
       return try TagModifier(from: params, appContext: appContext)
     }
 
+    register("scrollTargetBehavior") { params, appContext, _ in
+      return try ScrollTargetBehaviorModifier(from: params, appContext: appContext)
+    }
+
+    register("scrollTargetLayout") { params, appContext, _ in
+      return try ScrollTargetLayoutModifier(from: params, appContext: appContext)
+    }
+
     register("pickerStyle") { params, appContext, _ in
       return try PickerStyleModifier(from: params, appContext: appContext)
     }
@@ -1834,12 +1838,36 @@ extension ViewModifierRegistry {
       return try SubmitLabelModifier(from: params, appContext: appContext)
     }
 
+    register("textInputAutocapitalization") { params, appContext, _ in
+      return try TextInputAutocapitalizationModifier(from: params, appContext: appContext)
+    }
+
+    register("textContentType") { params, appContext, _ in
+      return try TextContentTypeModifier(from: params, appContext: appContext)
+    }
+
     register("datePickerStyle") { params, appContext, _ in
       return try DatePickerStyleModifier(from: params, appContext: appContext)
     }
 
     register("scrollDisabled") { params, appContext, _ in
       return try ScrollDisabledModifier(from: params, appContext: appContext)
+    }
+
+    register("tabViewStyle") { params, appContext, _ in
+      return try TabViewStyleModifier(from: params, appContext: appContext)
+    }
+
+    register("indexViewStyle") { params, appContext, _ in
+      return try IndexViewStyleModifier(from: params, appContext: appContext)
+    }
+
+    register("defaultScrollAnchor") { params, appContext, _ in
+      return try DefaultScrollAnchorModifier(from: params, appContext: appContext)
+    }
+
+    register("defaultScrollAnchorForRole") { params, appContext, _ in
+      return try DefaultScrollAnchorForRoleModifier(from: params, appContext: appContext)
     }
 
     register("progressViewStyle") { params, appContext, _ in
@@ -1884,6 +1912,26 @@ extension ViewModifierRegistry {
 
     register("contentTransition") { params, appContext, _ in
       return try ContentTransitionModifier(from: params, appContext: appContext)
+    }
+
+    register("widgetURL") { params, appContext, _ in
+      return try WidgetURLModifier(from: params, appContext: appContext)
+    }
+
+    register("keyboardType") { params, appContext, _ in
+      return try KeyboardTypeModifier(from: params, appContext: appContext)
+    }
+
+    register("autocorrectionDisabled") { params, appContext, _ in
+      return try AutocorrectionDisabledModifier(from: params, appContext: appContext)
+    }
+
+    register("onSubmit") { params, appContext, eventDispatcher in
+      return try OnSubmitModifier(from: params, appContext: appContext, eventDispatcher: eventDispatcher)
+    }
+
+    register("containerBackground") { params, appContext, _ in
+      return try ContainerBackgroundModifier(from: params, appContext: appContext)
     }
   }
 }

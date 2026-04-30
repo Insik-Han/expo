@@ -1,66 +1,20 @@
 import SwiftUI
 import ExpoModulesCore
 
-enum KeyboardType: String, Enumerable {
-  case defaultKeyboard = "default"
-  case emailAddress = "email-address"
-  case numeric = "numeric"
-  case phonePad = "phone-pad"
-  case asciiCapable = "ascii-capable"
-  case numbersAndPunctuation = "numbers-and-punctuation"
-  case url = "url"
-  case namePhonePad = "name-phone-pad"
-  case decimalPad = "decimal-pad"
-  case twitter = "twitter"
-  case webSearch = "web-search"
-  case asciiCapableNumberPad = "ascii-capable-number-pad"
+enum TextFieldAxis: String, Enumerable {
+  case horizontal
+  case vertical
 }
 
 final class TextFieldProps: UIBaseViewProps {
-  @Field var defaultValue: String = ""
-  @Field var placeholder: String = ""
-  @Field var multiline: Bool = false
-  @Field var numberOfLines: Int?
-  @Field var keyboardType: KeyboardType = KeyboardType.defaultKeyboard
-  @Field var autocorrection: Bool = true
-  @Field var allowNewlines: Bool = true
+  @Field var text: ObservableState?
   @Field var autoFocus: Bool = false
-  var onValueChanged = EventDispatcher()
-  var onFocusChanged = EventDispatcher()
-  var onSelectionChanged = EventDispatcher()
-  var onSubmit = EventDispatcher()
-}
-
-func getKeyboardType(_ keyboardType: KeyboardType?) -> UIKeyboardType {
-  guard let keyboardType = keyboardType else {
-    return .default
-  }
-  switch keyboardType {
-  case .defaultKeyboard:
-    return .default
-  case .emailAddress:
-    return .emailAddress
-  case .numeric:
-    return .numberPad
-  case .phonePad:
-    return .phonePad
-  case .asciiCapable:
-    return .asciiCapable
-  case .numbersAndPunctuation:
-    return .numbersAndPunctuation
-  case .url:
-    return .URL
-  case .namePhonePad:
-    return .namePhonePad
-  case .decimalPad:
-    return .decimalPad
-  case .twitter:
-    return .twitter
-  case .webSearch:
-    return .webSearch
-  case .asciiCapableNumberPad:
-    return .asciiCapableNumberPad
-  }
+  @Field var placeholder: String = ""
+  @Field var axis: TextFieldAxis = .horizontal
+  @Field var onTextChangeSync: WorkletCallback?
+  var onTextChange = EventDispatcher()
+  var onFocusChange = EventDispatcher()
+  var onSelectionChange = EventDispatcher()
 }
 
 class TextFieldManager: ObservableObject {
@@ -82,14 +36,6 @@ class TextFieldManager: ObservableObject {
   }
 }
 
-func allowMultiLine() -> Bool {
-#if os(tvOS)
-  return false
-#else
-  return true
-#endif
-}
-
 struct TextFieldView: ExpoSwiftUI.View, ExpoSwiftUI.FocusableView {
   @ObservedObject var props: TextFieldProps
   @ObservedObject var textManager: TextFieldManager = TextFieldManager()
@@ -100,7 +46,7 @@ struct TextFieldView: ExpoSwiftUI.View, ExpoSwiftUI.FocusableView {
   }
 
   func setText(_ text: String) {
-    textManager.text = text
+    props.text?.value = text
   }
 
   func focus() {
@@ -123,84 +69,91 @@ struct TextFieldView: ExpoSwiftUI.View, ExpoSwiftUI.FocusableView {
   func setSelection(start: Int, end: Int) {
 #if !os(tvOS)
     if #available(iOS 18.0, macOS 15.0, *) {
+      let currentText = (props.text?.value as? String) ?? ""
       let lowerBound = min(start, end)
       let upperBound = max(start, end)
-      let startIndex = textManager.text.index(textManager.text.startIndex, offsetBy: min(lowerBound, textManager.text.count))
-      let endIndex = textManager.text.index(textManager.text.startIndex, offsetBy: min(upperBound, textManager.text.count))
+      let startIndex = currentText.index(currentText.startIndex, offsetBy: min(lowerBound, currentText.count))
+      let endIndex = currentText.index(currentText.startIndex, offsetBy: min(upperBound, currentText.count))
       textManager.selection = SwiftUI.TextSelection(range: startIndex..<endIndex)
     }
 #endif
   }
 
-  var text: some View {
-    let text = if #available(iOS 18.0, macOS 15.0, tvOS 18.0, *) {
+  var body: some View {
+    if let state = props.text {
+      StatefulTextField(
+        state: state,
+        props: props,
+        textManager: textManager,
+        isFocused: $isFocused
+      )
+    }
+  }
+}
+
+private struct StatefulTextField: View {
+  @ObservedObject var state: ObservableState
+  @ObservedObject var props: TextFieldProps
+  @ObservedObject var textManager: TextFieldManager
+  @FocusState.Binding var isFocused: Bool
+
+  private var swiftUIAxis: Axis {
+    props.axis == .vertical ? .vertical : .horizontal
+  }
+
+  @ViewBuilder
+  var textField: some View {
+    let textBinding = state.binding("")
+    if #available(iOS 18.0, macOS 15.0, tvOS 18.0, *) {
 #if !os(tvOS)
       TextField(
         props.placeholder,
-        text: $textManager.text,
+        text: textBinding,
         selection: $textManager.selection,
-        axis: (props.multiline && allowMultiLine()) ? .vertical : .horizontal
+        axis: swiftUIAxis
       )
+      .focused($isFocused)
 #else
       TextField(
         props.placeholder,
-        text: $textManager.text,
-        axis: (props.multiline && allowMultiLine()) ? .vertical : .horizontal
+        text: textBinding,
+        axis: swiftUIAxis
       )
+      .focused($isFocused)
 #endif
     } else if #available(iOS 16.0, tvOS 16.0, *) {
       TextField(
         props.placeholder,
-        text: $textManager.text,
-        axis: (props.multiline && allowMultiLine()) ? .vertical : .horizontal
+        text: textBinding,
+        axis: swiftUIAxis
       )
+      .focused($isFocused)
     } else {
       TextField(
         props.placeholder,
-        text: $textManager.text
+        text: textBinding
       )
-    }
-    return text.lineLimit((props.multiline && allowMultiLine()) ? props.numberOfLines : 1)
-      .fixedSize(horizontal: false, vertical: true)
-      .keyboardType(getKeyboardType(props.keyboardType))
-      .autocorrectionDisabled(!props.autocorrection)
       .focused($isFocused)
-      .onSubmit({
-        if props.allowNewlines && props.multiline && allowMultiLine() {
-          if textManager.text.filter({ $0 == "\n" }).count < props.numberOfLines ?? Int.max - 1 {
-            textManager.text.append("\n")
-
-            // when selection state is set, the cursor does not auto update to added newline
-#if !os(tvOS)
-            if #available(iOS 18.0, macOS 15.0, *) {
-              let cursorPosition = textManager.text.endIndex
-              textManager.selection = SwiftUI.TextSelection(range: cursorPosition..<cursorPosition)
-            }
-#endif
-          }
-          isFocused = true
-        }
-        props.onSubmit(["value": textManager.text])
-      })
+    }
   }
 
   var body: some View {
-    let baseView = text
+    let baseView = textField
       .onAppear {
-        textManager.text = props.defaultValue
         if props.autoFocus {
           isFocused = true
         }
       }
-      .onChange(of: textManager.text) { newValue in
-        props.onValueChanged(["value": newValue])
+      .onChange(of: state.value as? String) { newValue in
+        props.onTextChange(["value": newValue])
+        props.onTextChangeSync?.invoke(arguments: [newValue])
       }
       .onChange(of: textManager.isFocused) { newValue in
         isFocused = newValue
       }
       .onChange(of: isFocused) { newValue in
         textManager.isFocused = newValue
-        props.onFocusChanged(["value": newValue])
+        props.onFocusChange(["value": newValue])
       }
 
 #if !os(tvOS)
@@ -208,12 +161,13 @@ struct TextFieldView: ExpoSwiftUI.View, ExpoSwiftUI.FocusableView {
       return baseView.onChange(of: textManager.selection) {
         if let selection = textManager.selection {
           if case let .selection(range) = selection.indices {
-            let clampedLower = range.lowerBound < textManager.text.endIndex ? range.lowerBound : textManager.text.endIndex
-            let clampedUpper = range.upperBound < textManager.text.endIndex ? range.upperBound : textManager.text.endIndex
+            let currentText = (state.value as? String) ?? ""
+            let clampedLower = range.lowerBound < currentText.endIndex ? range.lowerBound : currentText.endIndex
+            let clampedUpper = range.upperBound < currentText.endIndex ? range.upperBound : currentText.endIndex
 
-            let start = textManager.text.distance(from: textManager.text.startIndex, to: clampedLower)
-            let end = textManager.text.distance(from: textManager.text.startIndex, to: clampedUpper)
-            props.onSelectionChanged(["start": start, "end": end])
+            let start = currentText.distance(from: currentText.startIndex, to: clampedLower)
+            let end = currentText.distance(from: currentText.startIndex, to: clampedUpper)
+            props.onSelectionChange(["start": start, "end": end])
           }
         }
       }

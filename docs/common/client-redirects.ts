@@ -161,6 +161,22 @@ const RENAMED_PAGES: Record<string, string> = {
   '/develop/development-builds/installation/': '/develop/development-builds/create-a-build/',
   '/develop/development-builds/parallel-installation': '/build-reference/variants/',
 
+  // Picker replaced by SegmentedButton
+  '/versions/latest/sdk/ui/jetpack-compose/picker/':
+    '/versions/latest/sdk/ui/jetpack-compose/segmentedbutton/',
+  '/versions/unversioned/sdk/ui/jetpack-compose/picker/':
+    '/versions/unversioned/sdk/ui/jetpack-compose/segmentedbutton/',
+  '/versions/v55.0.0/sdk/ui/jetpack-compose/picker/':
+    '/versions/v55.0.0/sdk/ui/jetpack-compose/segmentedbutton/',
+
+  // TextInput renamed to TextField
+  '/versions/latest/sdk/ui/jetpack-compose/textinput/':
+    '/versions/latest/sdk/ui/jetpack-compose/textfield/',
+  '/versions/unversioned/sdk/ui/jetpack-compose/textinput/':
+    '/versions/unversioned/sdk/ui/jetpack-compose/textfield/',
+  '/versions/v55.0.0/sdk/ui/jetpack-compose/textinput/':
+    '/versions/v55.0.0/sdk/ui/jetpack-compose/textfield/',
+
   // Old redirects
   '/versions/latest/sdk/': '/versions/latest/',
   '/versions/latest/sdk/overview/': '/versions/latest/',
@@ -211,7 +227,7 @@ const RENAMED_PAGES: Record<string, string> = {
   '/routing/installation/': '/router/installation/',
   '/routing/create-pages/': '/router/create-pages/',
   '/routing/navigating-pages/': '/router/navigating-pages/',
-  '/routing/layouts/': '/router/basics/layout/',
+  '/routing/layouts/': '/router/basics/navigation-layouts/',
   '/routing/appearance/': '/router/introduction/',
   '/routing/error-handling/': '/router/error-handling/',
 
@@ -363,7 +379,7 @@ const RENAMED_PAGES: Record<string, string> = {
   '/eas-update/continuous-deployment/': '/eas/workflows/examples/',
 
   // Expo Router Advanced guides
-  '/router/advance/root-layout': '/router/basics/layout/#root-layout',
+  '/router/advance/root-layout': '/router/basics/navigation-layouts/#root-layout',
   '/router/advance/stack': '/router/advanced/stack/',
   '/router/advance/tabs': '/router/advanced/tabs/',
   '/router/advance/native-tabs': '/router/advanced/native-tabs/',
@@ -496,11 +512,12 @@ const RENAMED_PAGES: Record<string, string> = {
 
   // After Expo Router Getting Started Guide
   '/router/reference/authentication/': '/router/advanced/authentication/',
-  '/router/advanced/root-layout/': '/router/basics/layout/#root-layout/',
+  '/router/advanced/root-layout/': '/router/basics/navigation-layouts/#root-layout/',
   '/router/reference/not-found/': '/router/error-handling/',
   '/router/navigating-pages/': '/router/basics/navigation/',
   '/router/create-pages/': '/router/basics/core-concepts/',
-  '/router/layouts/': '/router/basics/layout/',
+  '/router/layouts/': '/router/basics/navigation-layouts/',
+  '/router/basics/layout/': '/router/basics/navigation-layouts/',
 
   // After updating config plugin section
   '/config-plugins/plugins-and-mods/': '/config-plugins/plugins/',
@@ -551,6 +568,12 @@ const RENAMED_PAGES: Record<string, string> = {
   '/versions/unversioned/sdk/router-ui/': '/versions/unversioned/sdk/router/ui/',
   '/versions/unversioned/sdk/router-native-tabs/': '/versions/unversioned/sdk/router/native-tabs/',
   '/versions/unversioned/sdk/router-split-view/': '/versions/unversioned/sdk/router/split-view/',
+  '/versions/v55.0.0/sdk/router-ui/': '/versions/v55.0.0/sdk/router/ui/',
+  '/versions/v55.0.0/sdk/router-native-tabs/': '/versions/v55.0.0/sdk/router/native-tabs/',
+  '/versions/v55.0.0/sdk/router-split-view/': '/versions/v55.0.0/sdk/router/split-view/',
+  '/versions/latest/sdk/router-ui/': '/versions/latest/sdk/router/ui/',
+  '/versions/latest/sdk/router-native-tabs/': '/versions/latest/sdk/router/native-tabs/',
+  '/versions/latest/sdk/router-split-view/': '/versions/latest/sdk/router/split-view/',
 
   // After merging get-started/introduction into get-started/create-a-project
   '/get-started/introduction/': '/get-started/create-a-project/',
@@ -560,4 +583,42 @@ const RENAMED_PAGES: Record<string, string> = {
     '/versions/unversioned/sdk/ui/jetpack-compose/dropdownmenu/',
   '/versions/v55.0.0/sdk/ui/jetpack-compose/contextmenu/':
     '/versions/v55.0.0/sdk/ui/jetpack-compose/dropdownmenu/',
+  '/versions/latest/sdk/ui/jetpack-compose/contextmenu/':
+    '/versions/latest/sdk/ui/jetpack-compose/dropdownmenu/',
+
+  // After merging FilterChip into Chip in expo-ui (Android)
+  '/versions/unversioned/sdk/ui/jetpack-compose/filterchip/':
+    '/versions/unversioned/sdk/ui/jetpack-compose/chip/',
+  '/versions/v55.0.0/sdk/ui/jetpack-compose/filterchip/':
+    '/versions/v55.0.0/sdk/ui/jetpack-compose/chip/',
+  '/versions/latest/sdk/ui/jetpack-compose/filterchip/':
+    '/versions/latest/sdk/ui/jetpack-compose/chip/',
+
+  // After removing TextButton and merging into Button in expo-ui (Android)
+  '/versions/unversioned/sdk/ui/jetpack-compose/textbutton/':
+    '/versions/unversioned/sdk/ui/jetpack-compose/button/',
+  '/versions/v55.0.0/sdk/ui/jetpack-compose/textbutton/':
+    '/versions/v55.0.0/sdk/ui/jetpack-compose/button/',
+  '/versions/latest/sdk/ui/jetpack-compose/textbutton/':
+    '/versions/latest/sdk/ui/jetpack-compose/button/',
+
+  // After merging LinearProgress and CircularProgress into Progress in expo-ui (Android)
+  '/versions/unversioned/sdk/ui/jetpack-compose/linearprogress/':
+    '/versions/unversioned/sdk/ui/jetpack-compose/progress/',
+  '/versions/unversioned/sdk/ui/jetpack-compose/circularprogress/':
+    '/versions/unversioned/sdk/ui/jetpack-compose/progress/',
+  '/versions/v55.0.0/sdk/ui/jetpack-compose/linearprogress/':
+    '/versions/v55.0.0/sdk/ui/jetpack-compose/progress/',
+  '/versions/v55.0.0/sdk/ui/jetpack-compose/circularprogress/':
+    '/versions/v55.0.0/sdk/ui/jetpack-compose/progress/',
+  '/versions/latest/sdk/ui/jetpack-compose/linearprogress/':
+    '/versions/latest/sdk/ui/jetpack-compose/progress/',
+  '/versions/latest/sdk/ui/jetpack-compose/circularprogress/':
+    '/versions/latest/sdk/ui/jetpack-compose/progress/',
+
+  // Based on Algolia 404 report 2026-04-01
+  '/versions/latest/sdk/secure-store/': '/versions/latest/sdk/securestore/',
+  '/versions/latest/sdk/av/': '/versions/v54.0.0/sdk/av/',
+  '/versions/latest/sdk/ui/jetpack-compose/floatingactionbutton/':
+    '/versions/unversioned/sdk/ui/jetpack-compose/floatingactionbutton/',
 };

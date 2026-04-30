@@ -18,8 +18,9 @@ import {
 } from './environmentVariableSerializerPlugin';
 import type { ExpoSerializerOptions } from './fork/baseJSBundle';
 import { getSortedModules, graphToSerialAssetsAsync } from './serializeChunks';
-import { SerialAsset } from './serializerAssets';
 import { env } from '../env';
+
+export type { SerialAsset } from './serializerAssets';
 
 // Lazy-loaded to avoid pulling in metro-source-map and @babel/traverse at startup (~100ms savings)
 let _sourceMapString: typeof import('@expo/metro/metro/DeltaBundler/Serializers/sourceMapString').sourceMapString;
@@ -133,7 +134,7 @@ export function createDefaultExportCustomSerializer(
     entryPoint: string,
     preModules: readonly Module<MixedOutput>[],
     graph: ReadOnlyGraph<MixedOutput>,
-    inputOptions: SerializerOptions<MixedOutput>
+    inputOptions: SerializerOptions
   ): Promise<string | { code: string; map: string }> => {
     // NOTE(@kitten): My guess is that this was supposed to always be disabled for `node` since we set `hot: true` manually for it
     const isPossiblyDev =
@@ -147,7 +148,7 @@ export function createDefaultExportCustomSerializer(
       environment: graph.transformOptions?.customTransformOptions?.environment ?? 'client',
     };
 
-    const options: SerializerOptions<MixedOutput> = {
+    const options: SerializerOptions = {
       ...inputOptions,
       createModuleId: (moduleId, ...props) => {
         if (props.length > 0) {
@@ -427,12 +428,12 @@ function getLoaderPaths(dependencies: ReadOnlyDependencies) {
   const loaderPaths = new Set<string>();
   for (const module of dependencies.values()) {
     for (const output of module.output) {
-      if ('loaderReference' in output.data && typeof output.data.loaderReference === 'string') {
+      // TODO: Module type should be upcast
+      const data = output.data as any;
+      if ('loaderReference' in data && typeof data.loaderReference === 'string') {
         loaderPaths.add(module.path);
       }
     }
   }
   return loaderPaths;
 }
-
-export { SerialAsset };

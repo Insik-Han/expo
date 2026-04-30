@@ -97,6 +97,7 @@ exceptions:
   - '.*Flipper.*'
   - '.*Frequently Asked Questions.*'
   - '.*Frame Content-Security Policy.*'
+  - '.*FAB.*'
   - '.*FAQ.*'
   - '.*FCM.*'
   - '.*FYI.*'
@@ -304,3 +305,8 @@ exceptions:
   - Integrated vs Isolated
   - Expo Skills
   - DSL
+  - TriStateCheckbox
+  - MainApplication
+  - MainActivity
+  - HorizontalCenteredHeroCarousel
+  - HorizontalUncontainedCarousel

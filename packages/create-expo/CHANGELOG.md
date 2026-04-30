@@ -6,9 +6,15 @@
 
 ### 🎉 New features
 
+- Generate `AGENTS.md`, `CLAUDE.md`, and `.claude/settings.json` for new projects to provide AI coding agents with Expo-specific guidance and the `expo` skills plugin. Use `--no-agents-md` to skip. ([#44618](https://github.com/expo/expo/pull/44618) by [@EvanBacon](https://github.com/EvanBacon))
+
 ### 🐛 Bug fixes
 
 ### 💡 Others
+
+- Replace tar dependency logic with `multitars` package ([#44764](https://github.com/expo/expo/pull/44764) by [@kitten](https://github.com/kitten))
+- Update to `multitars@^1.0.0` ([#44774](https://github.com/expo/expo/pull/44774) by [@kitten](https://github.com/kitten))
+- Fixed plugin setup in `.claude/settings.json`. ([#44951](https://github.com/expo/expo/pull/44951) by [@kudo](https://github.com/kudo))
 
 ## 3.6.6 — 2026-02-25
 

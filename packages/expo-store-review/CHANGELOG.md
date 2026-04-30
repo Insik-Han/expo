@@ -4,11 +4,15 @@
 
 ### 🛠 Breaking changes
 
+- Bumped minimum iOS/tvOS version to 16.4, macOS to 13.4. ([#43296](https://github.com/expo/expo/pull/43296) by [@tsapeta](https://github.com/tsapeta))
+
 ### 🎉 New features
 
 ### 🐛 Bug fixes
 
 ### 💡 Others
+
+- [iOS] Migrated `requestReview` to the new `@MainActor` async-function API. ([#44337](https://github.com/expo/expo/pull/44337) by [@tsapeta](https://github.com/tsapeta))
 
 ## 55.0.8 — 2026-02-25
 

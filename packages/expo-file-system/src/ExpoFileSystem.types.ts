@@ -68,7 +68,6 @@ export type DirectoryCreateOptions = {
 
 /**
  * Specifies the access mode when opening a file handle.
- * @platform android
  */
 export enum FileMode {
   /**
@@ -154,12 +153,22 @@ export declare class Directory {
   /**
    * Copies a directory.
    */
-  copy(destination: Directory | File, options?: RelocationOptions): void;
+  copy(destination: Directory | File, options?: RelocationOptions): Promise<void>;
+
+  /**
+   * Copies a directory synchronously.
+   */
+  copySync(destination: Directory | File, options?: RelocationOptions): void;
 
   /**
    * Moves a directory. Updates the `uri` property that now points to the new location.
    */
-  move(destination: Directory | File, options?: RelocationOptions): void;
+  move(destination: Directory | File, options?: RelocationOptions): Promise<void>;
+
+  /**
+   * Moves a directory synchronously. Updates the `uri` property that now points to the new location.
+   */
+  moveSync(destination: Directory | File, options?: RelocationOptions): void;
 
   /**
    * Renames a directory.
@@ -203,6 +212,20 @@ export declare class Directory {
   static pickDirectoryAsync(initialUri?: string): Promise<Directory>;
 }
 
+/**
+ * Data provided to the `onProgress` callback during a file download.
+ */
+export type DownloadProgress = {
+  /**
+   * The number of bytes written so far.
+   */
+  bytesWritten: number;
+  /**
+   * The total number of bytes expected to be downloaded. `-1` if the server did not provide a `Content-Length` header.
+   */
+  totalBytes: number;
+};
+
 export type DownloadOptions = {
   /**
    * The headers to send with the request.
@@ -220,6 +243,15 @@ export type DownloadOptions = {
    * @default false
    */
   idempotent?: boolean;
+  /**
+   * A callback that is invoked with progress updates during the download.
+   */
+  onProgress?: (data: DownloadProgress) => void;
+  /**
+   * An `AbortSignal` that can be used to cancel the download.
+   * When the signal is aborted, the download is cancelled and the promise rejects with an `AbortError`.
+   */
+  signal?: AbortSignal;
 };
 
 /**
@@ -236,7 +268,7 @@ export declare class File {
   /**
    * Represents the file URI. The field is read-only, but it may change as a result of calling some methods such as `move`.
    */
-  readonly uri: string;
+  get uri(): string;
 
   /**
    * @hidden This method is not meant to be used directly. It is called by the JS constructor.
@@ -316,12 +348,22 @@ export declare class File {
   /**
    * Copies a file.
    */
-  copy(destination: Directory | File, options?: RelocationOptions): void;
+  copy(destination: Directory | File, options?: RelocationOptions): Promise<void>;
+
+  /**
+   * Copies a file synchronously.
+   */
+  copySync(destination: Directory | File, options?: RelocationOptions): void;
 
   /**
    * Moves a directory. Updates the `uri` property that now points to the new location.
    */
-  move(destination: Directory | File, options?: RelocationOptions): void;
+  move(destination: Directory | File, options?: RelocationOptions): Promise<void>;
+
+  /**
+   * Moves a file synchronously. Updates the `uri` property that now points to the new location.
+   */
+  moveSync(destination: Directory | File, options?: RelocationOptions): void;
 
   /**
    * Renames a file.
@@ -332,8 +374,7 @@ export declare class File {
    * Returns A `FileHandle` object that can be used to read and write data to the file.
    *
    * @param mode - The {@link FileMode} to use.
-   * - **Android**: Supports all `FileMode` values, but SAF `content://` URIs do not support `ReadWrite` mode.
-   * - **iOS**: Defaults to `FileMode.ReadWrite`; explicitly passing other modes will be ignored.
+   * - On **Android**, SAF `content://` URIs do not support `ReadWrite` mode.
    * - **Defaults**:
    *   - For SAF `content://` URIs, the default is `FileMode.ReadOnly`.
    *   - For standard `file://` URIs, the default is `FileMode.ReadWrite`.
@@ -370,15 +411,88 @@ export declare class File {
   ): Promise<File>;
 
   /**
+   * Uploads this file to the network.
+   *
+   * The promise resolves with the HTTP response metadata and body for any completed response,
+   * including non-2xx status codes. It rejects only for local file errors, transport failures,
+   * or cancellation.
+   *
+   * @param url The URL to upload the file to.
+   * @param options Upload options.
+   */
+  upload(url: string, options?: UploadOptions): Promise<UploadResult>;
+
+  /**
+   * An overload of the `pickFileAsync` method, which picks and returns a single `File`.
+   * This overload requires options to have `multipleFiles` flag be `undefined` or `false`.
+   * @param options options
+   */
+  static pickFileAsync(options?: PickSingleFileOptions): Promise<PickSingleFileResult>;
+  /**
+   * An overload of the `pickFileAsync` method, which picks and returns a list of `File`'s.
+   * This overload requires options to have `multipleFiles` flag be `true`.
+   * @param options options
+   */
+  static pickFileAsync(options?: PickMultipleFilesOptions): Promise<PickMultipleFilesResult>;
+  /**
    * A static method that opens a file picker to select a single file of specified type. On iOS, it returns a temporary copy of the file leaving the original file untouched.
    *
    * Selecting multiple files is not supported yet.
    *
+   * @deprecated Use `pickFileAsync({initialUri, mimeTypes: mimeType})` instead.
    * @param initialUri An optional URI pointing to an initial folder on which the file picker is opened.
    * @param mimeType A mime type that is used to filter out files that can be picked out.
    * @returns A `File` instance or an array of `File` instances.
    */
   static pickFileAsync(initialUri?: string, mimeType?: string): Promise<File | File[]>;
+
+  /**
+   * Creates a download task for downloading a file with pause/resume support.
+   *
+   * @param url - The URL of the file to download.
+   * @param destination - The destination directory or file.
+   * @param options - Download options including headers, progress callback, and abort signal.
+   * @returns A `DownloadTask` instance that can be used to control the download.
+   *
+   * @example
+   * ```ts
+   * const dest = new File(Paths.document, 'video.mp4');
+   * const downloadTask = File.createDownloadTask(url, dest, {
+   *   onProgress: ({ bytesWritten, totalBytes }) => {
+   *     console.log(`Downloaded ${bytesWritten} of ${totalBytes} bytes`);
+   *   }
+   * });
+   * const file = await downloadTask.downloadAsync();
+   * ```
+   */
+  static createDownloadTask(
+    url: string,
+    destination: Directory | File,
+    options?: DownloadTaskOptions
+  ): DownloadTask;
+
+  /**
+   * Creates an upload task for uploading this file with progress tracking.
+   *
+   * @param url - The URL to upload the file to.
+   * @param options - Upload options including upload type, headers, progress callback, and abort signal.
+   * @returns An `UploadTask` instance that can be used to control the upload.
+   *
+   * @example
+   * ```ts
+   * const file = new File(Paths.document, 'photo.jpg');
+   * const uploadTask = file.createUploadTask(url, {
+   *   uploadType: UploadType.MULTIPART,
+   *   headers: { Authorization: 'Bearer token' },
+   *   onProgress: ({ bytesSent, totalBytes }) => {
+   *     console.log(`Uploaded ${bytesSent} of ${totalBytes} bytes`);
+   *   }
+   * });
+   * const result = await uploadTask.uploadAsync();
+   * console.log('Upload status:', result.status);
+   * ```
+   */
+  createUploadTask(url: string, options?: UploadOptions): UploadTask;
 
   /**
    * A size of the file in bytes. 0 if the file does not exist, or it cannot be read.
@@ -391,12 +505,18 @@ export declare class File {
   md5: string | null;
 
   /**
-   * A last modification time of the file expressed in milliseconds since epoch. Returns a Null if the file does not exist, or it cannot be read.
+   * A last modification time of the file expressed in milliseconds since the epoch. Returns a `null` if the file does not exist, or if it cannot be read.
+   * @deprecated In favor of `lastModified` to be more in line with web [`File`](https://developer.mozilla.org/en-US/docs/Web/API/File)
    */
   modificationTime: number | null;
 
   /**
-   * A creation time of the file expressed in milliseconds since epoch. Returns null if the file does not exist, cannot be read or the Android version is earlier than API 26.
+   * A last modification time of the file expressed in milliseconds since the epoch. Returns a `null` if the file does not exist, or if it cannot be read.
+   */
+  lastModified: number | null;
+
+  /**
+   * A creation time of the file expressed in milliseconds since the epoch. Returns a `null` if the file does not exist, cannot be read or the Android version is earlier than API 26.
    */
   creationTime: number | null;
 
@@ -404,6 +524,7 @@ export declare class File {
    * A mime type of the file. An empty string if the file does not exist, or it cannot be read.
    */
   type: string;
+
   /**
    * A content URI to the file that can be shared to external applications.
    * @platform android
@@ -512,3 +633,363 @@ export type DirectoryInfo = {
    */
   files?: string[];
 };
+
+export type PickFileGeneralOptions = {
+  /**
+   * A URI pointing to an initial folder in which the file picker is opened.
+   */
+  initialUri?: string;
+  /**
+   * The [MIME type(s)](https://en.wikipedia.org/wiki/Media_type) of the documents that are available
+   * to be picked. It also supports wildcards like `'image/*'` to choose any image. To allow any type
+   * of document you can use `'&ast;/*'`.
+   * @default '&ast;/*'
+   */
+  mimeTypes?: string | string[];
+  /**
+   * Allows multiple files to be selected from the system UI.
+   * @default false
+   */
+  multipleFiles?: boolean;
+};
+
+/**
+ * Options for picking a single file.
+ */
+export type PickSingleFileOptions = PickFileGeneralOptions & {
+  multipleFiles?: false;
+};
+
+/**
+ * Options for picking multiple files.
+ */
+export type PickMultipleFilesOptions = PickFileGeneralOptions & {
+  multipleFiles: true;
+};
+
+/**
+ * Options type for file picking.
+ * @hidden
+ */
+export type PickFileOptions = PickSingleFileOptions | PickMultipleFilesOptions;
+
+/**
+ * Result type for picking a single file.
+ */
+export type PickSingleFileResult = PickSingleFileSuccessResult | PickFileCanceledResult;
+
+/**
+ * Result type for picking multiple files.
+ */
+export type PickMultipleFilesResult = PickMultipleFilesSuccessResult | PickFileCanceledResult;
+
+/**
+ * Result type for successfully picking a single file.
+ */
+export type PickSingleFileSuccessResult = {
+  result: File;
+  canceled: false;
+};
+
+/**
+ * Result type for a successful picking multiple files.
+ */
+export type PickMultipleFilesSuccessResult = {
+  result: File[];
+  canceled: false;
+};
+
+/**
+ * Result type for a canceled file pick.
+ */
+export type PickFileCanceledResult = {
+  result: null;
+  canceled: true;
+};
+
+/**
+ * Represents the type of upload operation.
+ */
+export enum UploadType {
+  /**
+   * Binary content upload - the file is uploaded as-is in the request body.
+   */
+  BINARY_CONTENT = 0,
+  /**
+   * Multipart form upload - the file is uploaded as part of a multipart/form-data request.
+   */
+  MULTIPART = 1,
+}
+
+/**
+ * Represents upload progress data.
+ */
+export type UploadProgress = {
+  /**
+   * The number of bytes sent so far.
+   */
+  bytesSent: number;
+  /**
+   * The total number of bytes to send.
+   */
+  totalBytes: number;
+};
+
+/**
+ * Represents the result of an upload operation.
+ */
+export type UploadResult = {
+  /**
+   * The response body as a string.
+   */
+  body: string;
+  /**
+   * The HTTP status code.
+   */
+  status: number;
+  /**
+   * The response headers.
+   */
+  headers: Record<string, string>;
+};
+
+/**
+ * Options for upload operations.
+ */
+export type UploadOptions = {
+  /**
+   * The HTTP method to use.
+   * @default 'POST'
+   */
+  httpMethod?: 'POST' | 'PUT' | 'PATCH';
+  /**
+   * The type of upload operation.
+   * @default UploadType.BINARY_CONTENT
+   */
+  uploadType?: UploadType;
+  /**
+   * Custom headers to include in the request.
+   */
+  headers?: Record<string, string>;
+  /**
+   * The field name for the file in multipart uploads.
+   * @default 'file'
+   */
+  fieldName?: string;
+  /**
+   * The MIME type of the file.
+   */
+  mimeType?: string;
+  /**
+   * Additional form parameters to include in multipart uploads.
+   */
+  parameters?: Record<string, string>;
+  /**
+   * Callback for upload progress updates.
+   *
+   * > **Note:** For multipart uploads, the reported bytes may include multipart framing overhead
+   * > (boundary strings, headers, form parameters) in addition to the file content.
+   */
+  onProgress?: (data: UploadProgress) => void;
+  /**
+   * Determines whether the iOS native session should continue in the background.
+   *
+   * When set to `'background'`, the native transfer may continue after the app is
+   * suspended. However, the JavaScript `UploadTask` instance is not
+   * restored if the app is terminated or relaunched, so its promise, progress
+   * callbacks, and cancellation state are only available while the original JS
+   * runtime is still alive.
+   *
+   * @platform ios
+   * @default 'background'
+   */
+  sessionType?: NetworkTaskSessionType;
+  /**
+   * An `AbortSignal` that can be used to cancel the upload.
+   * When the signal is aborted, the upload is cancelled and the promise rejects with an `AbortError`.
+   */
+  signal?: AbortSignal;
+};
+
+/**
+ * Options for download task operations.
+ */
+export type DownloadTaskOptions = {
+  /**
+   * Custom headers to include in the request.
+   */
+  headers?: Record<string, string>;
+  /**
+   * Determines whether the iOS native session should continue in the background.
+   * Android accepts this option for API consistency and ignores it.
+   *
+   * When set to `'background'`, the native transfer may continue after the app is
+   * suspended. However, the JavaScript `DownloadTask` instance is not
+   * restored if the app is terminated or relaunched, so its promise, progress
+   * callbacks, and cancellation state are only available while the original JS
+   * runtime is still alive.
+   *
+   * @platform ios
+   * @default 'background'
+   */
+  sessionType?: NetworkTaskSessionType;
+  /**
+   * Callback for download progress updates.
+   */
+  onProgress?: (data: DownloadProgress) => void;
+  /**
+   * AbortSignal to cancel the download.
+   */
+  signal?: AbortSignal;
+};
+
+/**
+ * The native URL session mode used by iOS upload and download tasks.
+ */
+export type NetworkTaskSessionType = 'background' | 'foreground';
+
+/**
+ * Represents the state of a paused download that can be persisted and resumed later.
+ */
+export type DownloadPauseState = {
+  /**
+   * The URL of the download.
+   */
+  url: string;
+  /**
+   * The destination file or directory URI.
+   */
+  fileUri: string;
+  /**
+   * Whether the destination is a directory. When `true`, the filename is derived from the URL.
+   */
+  isDirectory: boolean;
+  /**
+   * Custom headers that were used for the download request.
+   */
+  headers?: Record<string, string>;
+  /**
+   * Platform-specific opaque resume data.
+   */
+  resumeData?: string;
+};
+
+/**
+ * Represents the current state of an upload or download task.
+ * @inline
+ */
+type TaskState = 'idle' | 'active' | 'paused' | 'completed' | 'cancelled' | 'error';
+
+/**
+ * Represents the current state of an upload task.
+ */
+export type UploadTaskState = Exclude<TaskState, 'paused'>;
+
+/**
+ * Represents the current state of a download task.
+ */
+export type DownloadTaskState = TaskState;
+
+/**
+ * Represents an upload task with progress tracking and cancellation support.
+ */
+export declare class UploadTask {
+  /**
+   * The current state of the upload task.
+   */
+  readonly state: UploadTaskState;
+
+  /**
+   * Creates a new upload task.
+   * @param file The file to upload.
+   * @param url The destination URL.
+   * @param options Upload options including headers, progress callback, and abort signal.
+   */
+  constructor(file: File, url: string, options?: UploadOptions);
+
+  /**
+   * Starts the upload operation.
+   * @returns A promise that resolves with the upload result.
+   * If the task is cancelled via `cancel()` or `signal`, the promise rejects.
+   */
+  uploadAsync(): Promise<UploadResult>;
+
+  /**
+   * Cancels the upload operation.
+   * Any pending `uploadAsync()` promise rejects after cancellation.
+   */
+  cancel(): void;
+
+  /**
+   * Adds a listener for upload progress events.
+   */
+  addListener(
+    eventName: 'progress',
+    listener: (data: UploadProgress) => void
+  ): { remove: () => void };
+}
+
+/**
+ * Represents a download task with pause/resume support and progress tracking.
+ */
+export declare class DownloadTask {
+  /**
+   * The current state of the download task.
+   */
+  readonly state: DownloadTaskState;
+
+  /**
+   * Creates a new download task.
+   * @param url The source URL.
+   * @param destination The destination file or directory.
+   * @param options Download options including headers, progress callback, and abort signal.
+   */
+  constructor(url: string, destination: File | Directory, options?: DownloadTaskOptions);
+
+  /**
+   * Starts the download operation.
+   * @returns A promise that resolves with the downloaded file, or null if paused.
+   * If the task is cancelled via `cancel()` or `signal`, the promise rejects.
+   */
+  downloadAsync(): Promise<File | null>;
+
+  /**
+   * Pauses the download operation. The pending downloadAsync() promise resolves with null.
+   */
+  pause(): void;
+
+  /**
+   * Resumes a paused download operation.
+   * @returns A promise that resolves with the downloaded file, or null if paused again.
+   * If the task is cancelled via `cancel()` or `signal`, the promise rejects.
+   */
+  resumeAsync(): Promise<File | null>;
+
+  /**
+   * Cancels the download operation.
+   * Any pending `downloadAsync()` or `resumeAsync()` promise rejects after cancellation.
+   */
+  cancel(): void;
+
+  /**
+   * Returns the current state that can be persisted and restored later.
+   * @returns The pause state.
+   */
+  savable(): DownloadPauseState;
+
+  /**
+   * Creates a download task from a saved state.
+   * @param state The saved pause state.
+   * @param options Optional new options to attach (e.g. onProgress, signal) since those are not persisted.
+   * @returns A new download task.
+   */
+  static fromSavable(state: DownloadPauseState, options?: DownloadTaskOptions): DownloadTask;
+
+  /**
+   * Adds a listener for download progress events.
+   */
+  addListener(
+    eventName: 'progress',
+    listener: (data: DownloadProgress) => void
+  ): { remove: () => void };
+}

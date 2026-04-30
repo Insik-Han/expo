@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, type NativeSyntheticEvent } from 'react-native';
 import {
   Tabs as _Tabs,
@@ -70,7 +69,7 @@ describe('NativeTabs.Trigger listeners prop', () => {
       second: () => <View testID="second" />,
     });
 
-    const indexTabKey = TabsScreen.mock.calls[0][0].tabKey;
+    const indexTabKey = TabsScreen.mock.calls[0]![0].tabKey;
 
     triggerNativeFocusChange({
       nativeEvent: { tabKey: indexTabKey, repeatedSelectionHandledBySpecialEffect: false },
@@ -106,7 +105,7 @@ describe('NativeTabs.Trigger listeners prop', () => {
       second: () => <View testID="second" />,
     });
 
-    const indexTabKey = TabsScreen.mock.calls[0][0].tabKey;
+    const indexTabKey = TabsScreen.mock.calls[0]![0].tabKey;
 
     triggerNativeFocusChange({
       nativeEvent: { tabKey: indexTabKey, repeatedSelectionHandledBySpecialEffect: false },
@@ -136,7 +135,7 @@ describe('NativeTabs.Trigger listeners prop', () => {
       second: () => <View testID="second" />,
     });
 
-    const secondTabKey = TabsScreen.mock.calls[1][0].tabKey;
+    const secondTabKey = TabsScreen.mock.calls[1]![0].tabKey;
 
     triggerNativeFocusChange({
       nativeEvent: { tabKey: secondTabKey, repeatedSelectionHandledBySpecialEffect: false },
@@ -166,8 +165,8 @@ describe('NativeTabs screenListeners prop', () => {
       second: () => <View testID="second" />,
     });
 
-    const indexTabKey = TabsScreen.mock.calls[0][0].tabKey;
-    const secondTabKey = TabsScreen.mock.calls[1][0].tabKey;
+    const indexTabKey = TabsScreen.mock.calls[0]![0].tabKey;
+    const secondTabKey = TabsScreen.mock.calls[1]![0].tabKey;
 
     triggerNativeFocusChange({
       nativeEvent: { tabKey: indexTabKey, repeatedSelectionHandledBySpecialEffect: false },
@@ -212,7 +211,7 @@ describe('NativeTabs screenListeners prop', () => {
       second: () => <View testID="second" />,
     });
 
-    const indexTabKey = TabsScreen.mock.calls[0][0].tabKey;
+    const indexTabKey = TabsScreen.mock.calls[0]![0].tabKey;
 
     triggerNativeFocusChange({
       nativeEvent: { tabKey: indexTabKey, repeatedSelectionHandledBySpecialEffect: false },
@@ -242,7 +241,7 @@ describe('NativeTabs screenListeners prop', () => {
       second: () => <View testID="second" />,
     });
 
-    const indexTabKey = TabsScreen.mock.calls[0][0].tabKey;
+    const indexTabKey = TabsScreen.mock.calls[0]![0].tabKey;
 
     triggerNativeFocusChange({
       nativeEvent: { tabKey: indexTabKey, repeatedSelectionHandledBySpecialEffect: false },

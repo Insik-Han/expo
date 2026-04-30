@@ -2,7 +2,7 @@ import { type ColorValue } from 'react-native';
 
 import { type AnimatedValue } from './animation';
 import { createModifier, createModifierWithEventListener } from './createModifier';
-export { type ExpoModifier } from '../../types';
+export { type ExpoModifier, type ModifierConfig } from '../../types';
 export {
   animated,
   spring,
@@ -91,6 +91,17 @@ export const width = (value: number) => createModifier('width', { width: value }
 export const height = (value: number) => createModifier('height', { height: value });
 
 /**
+ * Constrain the size of the wrapped layout only when it would be
+ * otherwise unconstrained: the `minWidth` and `minHeight` constraints
+ * are only applied when the incoming corresponding constraint is `0`.
+ * @param options.minWidth - Minimum width in dp.
+ * @param options.minHeight - Minimum height in dp.
+ * @see [Compose `defaultMinSize` modifier](https://developer.android.com/reference/kotlin/androidx/compose/ui/Modifier#%28androidx.compose.ui.Modifier%29.defaultMinSize%28androidx.compose.ui.unit.Dp%2Candroidx.compose.ui.unit.Dp%29)
+ */
+export const defaultMinSize = (options: { minWidth?: number; minHeight?: number }) =>
+  createModifier('defaultMinSize', options);
+
+/**
  * Wraps the width to the content size.
  * @param alignment - Optional horizontal alignment ('start', 'centerHorizontally', 'end').
  */
@@ -103,6 +114,16 @@ export const wrapContentWidth = (alignment?: 'start' | 'centerHorizontally' | 'e
  */
 export const wrapContentHeight = (alignment?: 'top' | 'centerVertically' | 'bottom') =>
   createModifier('wrapContentHeight', alignment ? { alignment } : {});
+
+// =============================================================================
+// Inset Modifiers
+// =============================================================================
+
+/**
+ * Adds padding to avoid the software keyboard (IME).
+ * When the keyboard is visible, padding is added to keep content above it.
+ */
+export const imePadding = () => createModifier('imePadding');
 
 // =============================================================================
 // Position Modifiers
@@ -243,6 +264,18 @@ export const align = (alignment: Alignment) => createModifier('align', { alignme
  */
 export const matchParentSize = () => createModifier('matchParentSize');
 
+/**
+ * Marks a composable as the anchor for an `ExposedDropdownMenuBox`.
+ * Only works when used inside `ExposedDropdownMenuBox`.
+ * @param type - Anchor type. Currently only `'primaryNotEditable'` is supported.
+ * @param enabled - Whether the anchor is enabled. Defaults to `true`.
+ */
+export const menuAnchor = (type?: 'primaryNotEditable', enabled?: boolean) =>
+  createModifier('menuAnchor', {
+    ...(type && { type }),
+    ...(typeof enabled === 'boolean' && { enabled }),
+  });
+
 // =============================================================================
 // Interaction Modifiers
 // =============================================================================
@@ -262,9 +295,57 @@ export const clickable = (handler: () => void, options?: { indication?: boolean 
  * Makes the view selectable, like a radio button row.
  * @param selected - Whether the item is currently selected.
  * @param handler - Function to call when the item is clicked.
+ * @param role - Optional semantic role for accessibility: 'radioButton', 'checkbox', 'switch', or 'tab'.
  */
-export const selectable = (selected: boolean, handler: () => void) =>
-  createModifierWithEventListener('selectable', handler, { selected });
+export const selectable = (
+  selected: boolean,
+  handler: () => void,
+  role?: 'radioButton' | 'checkbox' | 'switch' | 'tab'
+) => createModifierWithEventListener('selectable', handler, { selected, role });
+
+/**
+ * Marks a column/row as a selectable group for accessibility.
+ * Screen readers will treat the children as a group of selectable items.
+ */
+export const selectableGroup = () => createModifier('selectableGroup');
+
+/**
+ * Makes the view toggleable with accessibility semantics.
+ * Use this to make a row containing a checkbox or switch tappable as a whole.
+ * @param value - The current toggle state.
+ * @param handler - Function to call when toggled.
+ * @param options - Optional configuration.
+ * @param options.role - The semantic role for accessibility: `'checkbox'`, `'radioButton'`, `'switch'`, or `'tab'`.
+ */
+export const toggleable = (
+  value: boolean,
+  handler: () => void,
+  options?: { role?: 'checkbox' | 'radioButton' | 'switch' | 'tab' }
+) => createModifierWithEventListener('toggleable', handler, { value, role: options?.role });
+
+// =============================================================================
+// Lifecycle Modifiers
+// =============================================================================
+
+/**
+ * Calls the handler when the composable's visibility changes (for example, enters or leaves the viewport in a lazy list).
+ * @param handler - Function called with `true` when visible, `false` when not.
+ * @param options - Optional configuration.
+ * @param options.minDurationMs - Minimum duration in ms before the callback fires. Default is 0.
+ * @param options.minFractionVisible - Fraction of the view that must be visible (0.0 to 1.0). Default is 1.0.
+ */
+export const onVisibilityChanged = (
+  handler: (isVisible: boolean) => void,
+  options?: { minDurationMs?: number; minFractionVisible?: number }
+) =>
+  createModifierWithEventListener(
+    'onVisibilityChanged',
+    (params: { isVisible: boolean }) => handler(params.isVisible),
+    {
+      minDurationMs: options?.minDurationMs,
+      minFractionVisible: options?.minFractionVisible,
+    }
+  );
 
 // =============================================================================
 // Utility Modifiers
@@ -398,3 +479,21 @@ export const Shapes = {
  * @param shape - A shape from `Shapes`, e.g. `Shapes.Circle` or `Shapes.Material.Heart`.
  */
 export const clip = (shape: BuiltinShape) => createModifier('clip', { shape });
+
+// =============================================================================
+// Scroll Modifiers
+// =============================================================================
+
+/**
+ * Makes the view vertically scrollable.
+ * Wraps `Modifier.verticalScroll(rememberScrollState())`.
+ * Use on a Column to create a non-lazy scrollable container.
+ */
+export const verticalScroll = () => createModifier('verticalScroll');
+
+/**
+ * Makes the view horizontally scrollable.
+ * Wraps `Modifier.horizontalScroll(rememberScrollState())`.
+ * Use on a Row to create a non-lazy scrollable container.
+ */
+export const horizontalScroll = () => createModifier('horizontalScroll');

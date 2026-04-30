@@ -4,13 +4,25 @@
 
 ### 🛠 Breaking changes
 
+- Bumped minimum iOS/tvOS version to 16.4, macOS to 13.4. ([#43296](https://github.com/expo/expo/pull/43296) by [@tsapeta](https://github.com/tsapeta))
+
 ### 🎉 New features
+
+- Expose a typed config plugin function ([#44098](https://github.com/expo/expo/pull/44098) by [@zoontek](https://github.com/zoontek))
+- [iOS] Add `keepFullscreenOnPiPStop` property. ([#44811](https://github.com/expo/expo/pull/44811) by [@behenate](https://github.com/behenate))
+- [iOS] Add support for overriding Asset loading behavior with `VideoAssetTransportProvider`. ([#44935](https://github.com/expo/expo/pull/44935) by [@behenate](https://github.com/behenate))
 
 ### 🐛 Bug fixes
 
 - [iOS] Fix crash when loading PHAsset url fails ([#43373](https://github.com/expo/expo/pull/43373) by [@fractalbeauty](https://github.com/fractalbeauty))
+- [iOS] Fix crashes when `VideoTrack` properties are non-finite. ([#44108](https://github.com/expo/expo/pull/44108) by [@behenate](https://github.com/behenate))
+- [Android] Fix PiP exiting immediately after auto-entering from fullscreen. ([#44157](https://github.com/expo/expo/pull/44157) by [@behenate](https://github.com/behenate))
+- [Android] Fix broken layout after returning from PiP when auto-enter if off. ([#44163](https://github.com/expo/expo/pull/44163) by [@behenate](https://github.com/behenate))
+- [Android] Hide the surface until the first frame after replacing the video source so the previous stream does not remain visible when switching to a different resolution. ([#44385](https://github.com/expo/expo/issues/44385)) ([#44467](https://github.com/expo/expo/pull/44467) by [@vj2303](https://github.com/vj2303))
 
 ### 💡 Others
+
+- [Android] Bump media3 version to 1.9.0. ([#44823](https://github.com/expo/expo/pull/44823) by [@lukmccall](https://github.com/lukmccall))
 
 ## 55.0.9 — 2026-02-25
 
@@ -85,6 +97,7 @@ _This version does not introduce any user-facing changes._
 - Allow assigning `null` value to the `player` prop of the `VideoView` ([#40860](https://github.com/expo/expo/pull/40860) by [@behenate](https://github.com/behenate))
 - [Android][iOS] Add `averageBitrate` and `peakBitrate` for video tracks. ([#41532](https://github.com/expo/expo/pull/41532) by [@behenate](https://github.com/behenate))
 - [Android][iOS] Add `url` field to HLS video tracks. ([#41681](https://github.com/expo/expo/pull/41681) by [@behenate](https://github.com/behenate))
+- [Android][iOS] Add `videoRange` field to `VideoTrack` ([#41738](https://github.com/expo/expo/pull/41738) by [@behenate](https://github.com/behenate))
 
 ### 🐛 Bug fixes
 

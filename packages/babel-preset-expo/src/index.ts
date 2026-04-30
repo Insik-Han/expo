@@ -8,6 +8,7 @@ import {
   getBundler,
   getInlineEnvVarsEnabled,
   getIsDev,
+  getIsDomComponent,
   getIsFastRefreshEnabled,
   getIsHermesV1,
   getIsNodeModule,
@@ -16,7 +17,6 @@ import {
   getIsServer,
   getReactCompiler,
   getMetroSourceType,
-  hasModule,
 } from './common';
 import { environmentRestrictedImportsPlugin } from './environment-restricted-imports';
 import { expoInlineManifestPlugin } from './expo-inline-manifest-plugin';
@@ -28,6 +28,7 @@ import { environmentRestrictedReactAPIsPlugin } from './restricted-react-api-plu
 import { reactServerActionsPlugin } from './server-actions-plugin';
 import { serverDataLoadersPlugin } from './server-data-loaders-plugin';
 import { expoUseDomDirectivePlugin } from './use-dom-directive-plugin';
+import { hasModule, resolveModule } from './utils/resolveModule';
 import { widgetsPlugin } from './widgets-plugin';
 
 type BabelPresetExpoPlatformOptions = {
@@ -71,11 +72,11 @@ type BabelPresetExpoPlatformOptions = {
   /**
    * Enable that transform that converts `import.meta` to `globalThis.__ExpoImportMetaRegistry`.
    *
-   * > **Note:** Use this option at your own risk. If the JavaScript engine supports `import.meta` natively, this transformation may interfere with the native implementation.
+   * > **Note:** If the JavaScript engine supports `import.meta` natively, this transformation may interfere with the native implementation.
    *
-   * @default `false` on client and `true` on server.
+   * @default `true`
    */
-  unstable_transformImportMeta?: boolean;
+  transformImportMeta?: boolean;
 };
 
 export type BabelPresetExpoOptions = BabelPresetExpoPlatformOptions & {
@@ -109,6 +110,7 @@ function babelPresetExpo(api: ConfigAPI, options: BabelPresetExpoOptions = {}): 
   const isFastRefreshEnabled = api.caller(getIsFastRefreshEnabled);
   const isReactCompilerEnabled = api.caller(getReactCompiler);
   const isHermesV1 = api.caller(getIsHermesV1);
+  const isDomComponent = api.caller(getIsDomComponent);
   const metroSourceType = api.caller(getMetroSourceType);
   const baseUrl = api.caller(getBaseUrl);
   const supportsStaticESM: boolean | undefined = api.caller(
@@ -127,10 +129,12 @@ function babelPresetExpo(api: ConfigAPI, options: BabelPresetExpoOptions = {}): 
     platform = 'web';
   }
 
-  // Use the simpler babel preset for web and server environments (both web and native SSR).
-  const isModernEngine = platform === 'web' || isServerEnv;
-
   const platformOptions = getOptions(options, platform);
+
+  // Use the simpler babel preset for web and server environments (both web and native SSR).
+  // For DOM components, the webview may be an Android factory WebView that doesn't support many modern JavaScript features,
+  // so we need to use the more compatible preset for web regardless.
+  const isModernEngine = (platform === 'web' || isServerEnv) && !isDomComponent;
 
   // If the input is a script, we're unable to add any dependencies. Since the @babel/runtime transformer
   // adds extra dependencies (requires/imports) we need to disable it
@@ -154,7 +158,7 @@ function babelPresetExpo(api: ConfigAPI, options: BabelPresetExpoOptions = {}): 
     }
   }
 
-  if (platformOptions.unstable_transformProfile == null) {
+  if (platformOptions.unstable_transformProfile == null && !isDomComponent) {
     platformOptions.unstable_transformProfile = engine === 'hermes' ? 'hermes-stable' : 'default';
   }
 
@@ -289,9 +293,8 @@ function babelPresetExpo(api: ConfigAPI, options: BabelPresetExpoOptions = {}): 
     extraPlugins.push(expoInlineManifestPlugin);
   }
 
-  if (hasModule('expo-router')) {
+  if (hasModule(api, 'expo-router/package.json')) {
     extraPlugins.push(expoRouterBabelPlugin);
-
     // Process `loader()` functions for client, loader and server bundles (excluding RSC)
     // - Client bundles: Remove loader exports, they run on server only
     // - Server bundles: Keep loader exports (needed for SSG)
@@ -318,7 +321,7 @@ function babelPresetExpo(api: ConfigAPI, options: BabelPresetExpoOptions = {}): 
 
   // Transform widget component JSX expressions to capture widget components for native-side evaluation.
   // This enables the native side to re-evaluate widget components with updated props without re-sending the entire layout.
-  if (hasModule('expo-widgets')) {
+  if (hasModule(api, 'expo-widgets/package.json')) {
     extraPlugins.push(widgetsPlugin);
   }
 
@@ -339,7 +342,7 @@ function babelPresetExpo(api: ConfigAPI, options: BabelPresetExpoOptions = {}): 
     extraPlugins.push([require('./detect-dynamic-exports').detectDynamicExports]);
   }
 
-  const polyfillImportMeta = platformOptions.unstable_transformImportMeta ?? isServerEnv;
+  const polyfillImportMeta = platformOptions.transformImportMeta !== false;
 
   extraPlugins.push(expoImportMetaTransformPluginFactory(polyfillImportMeta === true));
 
@@ -402,11 +405,32 @@ function babelPresetExpo(api: ConfigAPI, options: BabelPresetExpoOptions = {}): 
         // doesn't do that and we can't rely on Hermes spec compliance enough to use standard presets.
         const babelPresetReactNativeEnv = getPreset(null, presetOpts);
 
-        // Add the `@babel/plugin-transform-export-namespace-from` plugin to the preset but ensure it runs after
-        // the TypeScript plugins to ensure namespace type exports (TypeScript 5.0+) `export type * as Types from './module';`
-        // are stripped before the transform. Otherwise the transform will extraneously include the types as syntax.
         babelPresetReactNativeEnv.overrides.push({
-          plugins: [require('./babel-plugin-transform-export-namespace-from')],
+          plugins: [
+            // Add the `@babel/plugin-transform-export-namespace-from` plugin to the preset but ensure it runs after
+            // the TypeScript plugins to ensure namespace type exports (TypeScript 5.0+) `export type * as Types from './module';`
+            // are stripped before the transform. Otherwise the transform will extraneously include the types as syntax.
+            require('./babel-plugin-transform-export-namespace-from'),
+
+            ...(isDomComponent
+              ? [
+                  // These plugins are required to support the older JavaScript environment of Android factory WebViews.
+                  // For example Android 9 and Chromium 66.
+
+                  // callsite: https://github.com/expo/expo/blob/fa2c26e39549edc144657c50a189271ca56d1ab9/packages/%40expo/log-box/src/LogBox.ts#L88
+                  [require('@babel/plugin-transform-optional-chaining'), { loose: true }],
+
+                  // callsite: https://github.com/facebook/metro/blob/7446b90ea53fa0173256da690a01df12e67b0deb/packages/metro-runtime/src/polyfills/require.js#L97
+                  [require('@babel/plugin-transform-nullish-coalescing-operator'), { loose: true }],
+
+                  // callsite: https://github.com/expo/expo/blob/fa2c26e39549edc144657c50a189271ca56d1ab9/packages/%40expo/log-box/src/Data/LogBoxData.tsx#L404
+                  [
+                    require('@babel/plugin-transform-logical-assignment-operators'),
+                    { loose: true },
+                  ],
+                ]
+              : []),
+          ],
         });
 
         return babelPresetReactNativeEnv;
@@ -449,15 +473,25 @@ function babelPresetExpo(api: ConfigAPI, options: BabelPresetExpoOptions = {}): 
         platformOptions.decorators ?? { legacy: true },
       ],
 
-      // Automatically add `react-native-reanimated/plugin` when the package is installed.
-      // TODO: Move to be a customTransformOption.
-      hasModule('react-native-worklets') &&
-      platformOptions.worklets !== false &&
-      platformOptions.reanimated !== false
-        ? [require('react-native-worklets/plugin')]
-        : hasModule('react-native-reanimated') &&
-          platformOptions.reanimated !== false && [require('react-native-reanimated/plugin')],
-    ].filter(Boolean) as PluginItem[],
+      // Automatically add worklets or reanimated plugin when package is installed.
+      ((): PluginItem | null => {
+        if (platformOptions.worklets !== false && platformOptions.reanimated !== false) {
+          const workletsPlugin = resolveModule(api, 'react-native-worklets/plugin');
+          if (workletsPlugin) {
+            return [require(workletsPlugin)];
+          }
+        }
+
+        if (platformOptions.reanimated !== false) {
+          const reanimatedPlugin = resolveModule(api, 'react-native-reanimated/plugin');
+          if (reanimatedPlugin) {
+            return [require(reanimatedPlugin)];
+          }
+        }
+
+        return null;
+      })(),
+    ].filter((x): x is PluginItem => !!x),
   };
 }
 

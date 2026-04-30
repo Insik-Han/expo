@@ -9,7 +9,7 @@ func parseTimeline(identifier: String, name: String, family: WidgetFamily) -> [W
     if let entry = entry as? [String: Any], let timestamp = entry["timestamp"] as? Int, let props = entry["props"] as? [String: Any] {
       return WidgetsTimelineEntry(
         date: Date(timeIntervalSince1970: Double(timestamp) / 1000),
-        source: name,
+        name: name,
         props: props,
         entryIndex: index
       )
@@ -53,11 +53,10 @@ func getLiveActivityNodes(forName name: String, props: String = "{}", environmen
 }
 
 func getLiveActivityUrl(forName name: String) -> URL? {
-  let data = WidgetsStorage.getData(forKey: "__expo_widgets_live_activity_\(name)_url")
-  if let data, let url = String(data: data, encoding: .utf8) {
-    return URL(string: url)
+  guard let urlString = WidgetsStorage.getString(forKey: "__expo_widgets_live_activity_\(name)_url") else {
+    return nil
   }
-  return nil
+  return URL(string: urlString)
 }
 
 func getWidgetEnvironment(environment: EnvironmentValues) -> [String: Any] {

@@ -1,4 +1,3 @@
-import { useTheme } from '@react-navigation/native';
 import React, { useDeferredValue, useMemo } from 'react';
 import { View, type ColorValue } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -17,13 +16,14 @@ import {
   type NativeTabOptions,
   type NativeTabsViewProps,
 } from './types';
+import { useTheme } from '../react-navigation/native';
+import { useBottomAccessoryFunctionFromBottomAccessories } from './utils/bottomAccessory';
 import {
   convertOptionsIconToRNScreensPropsIcon,
   convertOptionsIconToIOSPropsIcon,
   useAwaitedScreensIcon,
 } from './utils/icon';
 import { getFirstChildOfType } from '../utils/children';
-import { useBottomAccessoryFunctionFromBottomAccessories } from './utils/bottomAccessory';
 
 export function NativeTabsView(props: NativeTabsViewProps) {
   const {
@@ -67,8 +67,8 @@ export function NativeTabsView(props: NativeTabsViewProps) {
         name={tab.name}
         options={tab.options}
         isFocused={isFocused}
-        standardAppearance={appearances[index].standardAppearance}
-        scrollEdgeAppearance={appearances[index].scrollEdgeAppearance}
+        standardAppearance={appearances[index]!.standardAppearance}
+        scrollEdgeAppearance={appearances[index]!.scrollEdgeAppearance}
         badgeTextColor={tab.options.badgeTextColor}
         contentRenderer={tab.contentRenderer}
       />
@@ -208,6 +208,9 @@ function Screen(props: {
   return (
     <Tabs.Screen
       {...options}
+      // TODO(@ubax): https://linear.app/expo/issue/ENG-20736/remove-pointerevents-from-nativetabsview
+      // @ts-expect-error pointerEvents are not exposed by react-native-screens, but still are passed down to native component
+      pointerEvents={isFocused ? 'box-none' : 'none'}
       overrideScrollViewContentInsetAdjustmentBehavior={!options.disableAutomaticContentInsets}
       tabBarItemBadgeBackgroundColor={
         standardAppearance.stacked?.normal?.tabBarItemBadgeBackgroundColor

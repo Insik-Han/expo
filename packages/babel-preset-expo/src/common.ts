@@ -4,17 +4,6 @@ import { addNamed as addNamedImport } from '@babel/helper-module-imports';
 import type { ExpoBabelCaller } from '@expo/metro-config/build/babel-transformer';
 import path from 'node:path';
 
-export function hasModule(name: string): boolean {
-  try {
-    return !!require.resolve(name);
-  } catch (error: any) {
-    if (error.code === 'MODULE_NOT_FOUND' && error.message.includes(name)) {
-      return false;
-    }
-    throw error;
-  }
-}
-
 /** Determine which bundler is being used. */
 export function getBundler(caller?: any) {
   assertExpoBabelCaller(caller);
@@ -103,6 +92,11 @@ export function getReactCompiler(caller?: any) {
 export function getIsServer(caller?: any) {
   assertExpoBabelCaller(caller);
   return caller?.isServer ?? false;
+}
+
+export function getIsDomComponent(caller?: any): boolean {
+  assertExpoBabelCaller(caller);
+  return caller?.isDomComponent ?? false;
 }
 
 export function getIsLoaderBundle(caller?: any) {

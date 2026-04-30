@@ -1,7 +1,9 @@
 import { ThemeProvider } from 'ThemeProvider';
+import { AppMetricsRoot } from 'expo-observe';
 import * as Splashscreen from 'expo-splash-screen';
 import React from 'react';
 import * as DevMenu from 'expo-dev-menu';
+import ExpoObserve from 'expo-observe';
 
 import MainNavigator, { optionalRequire } from './MainNavigator';
 
@@ -64,6 +66,11 @@ function useLoaded() {
   return isLoaded;
 }
 
+ExpoObserve.configure({
+  dispatchingEnabled: true,
+  sampleRate: 0.9,
+});
+
 export default function Main() {
   React.useEffect(() => {
     try {
@@ -86,5 +93,9 @@ export default function Main() {
 
   const isLoaded = useLoaded();
 
-  return <ThemeProvider>{isLoaded ? <MainNavigator /> : null}</ThemeProvider>;
+  return (
+    <AppMetricsRoot>
+      <ThemeProvider>{isLoaded ? <MainNavigator /> : null}</ThemeProvider>
+    </AppMetricsRoot>
+  );
 }

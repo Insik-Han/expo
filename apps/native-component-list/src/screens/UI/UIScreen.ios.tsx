@@ -27,6 +27,46 @@ export const UIScreens = [
     },
   },
   {
+    name: 'Community BottomSheet replacement',
+    route: 'ui/community-bottomsheet',
+    options: {},
+    getComponent() {
+      return optionalRequire(() => require('./CommunityBottomSheetScreen'));
+    },
+  },
+  {
+    name: 'Community Picker replacement',
+    route: 'ui/community-picker',
+    options: {},
+    getComponent() {
+      return optionalRequire(() => require('./CommunityPickerScreen'));
+    },
+  },
+  {
+    name: 'Community DateTimePicker replacement',
+    route: 'ui/community-datetimepicker',
+    options: {},
+    getComponent() {
+      return optionalRequire(() => require('./CommunityDateTimePickerScreen'));
+    },
+  },
+  {
+    name: 'Community SegmentedControl replacement',
+    route: 'ui/community-segmented-control',
+    options: {},
+    getComponent() {
+      return optionalRequire(() => require('./CommunitySegmentedControlScreen'));
+    },
+  },
+  {
+    name: 'TabView component',
+    route: 'ui/tabview',
+    options: {},
+    getComponent() {
+      return optionalRequire(() => require('./TabViewScreen'));
+    },
+  },
+  {
     name: 'Toggle component',
     route: 'ui/toggle',
     options: {},
@@ -99,11 +139,11 @@ export const UIScreens = [
     },
   },
   {
-    name: 'TextInput component',
-    route: 'ui/textInput',
+    name: 'TextField component',
+    route: 'ui/textField',
     options: {},
     getComponent() {
-      return optionalRequire(() => require('./TextInputScreen'));
+      return optionalRequire(() => require('./TextFieldScreen'));
     },
   },
   {
@@ -203,6 +243,14 @@ export const UIScreens = [
     },
   },
   {
+    name: 'LazyVStack / LazyHStack',
+    route: 'ui/lazy-stack',
+    options: {},
+    getComponent() {
+      return optionalRequire(() => require('./LazyStackScreen'));
+    },
+  },
+  {
     name: 'ScrollView component',
     route: 'ui/scrollview',
     options: {},
@@ -232,6 +280,30 @@ export const UIScreens = [
     options: {},
     getComponent() {
       return optionalRequire(() => require('./TextScreen'));
+    },
+  },
+  {
+    name: 'Link component',
+    route: 'ui/link',
+    options: {},
+    getComponent() {
+      return optionalRequire(() => require('./LinkScreen'));
+    },
+  },
+  {
+    name: 'Mask component',
+    route: 'ui/mask',
+    options: {},
+    getComponent() {
+      return optionalRequire(() => require('./MaskScreen'));
+    },
+  },
+  {
+    name: 'Overlay component',
+    route: 'ui/overlay',
+    options: {},
+    getComponent() {
+      return optionalRequire(() => require('./OverlayScreen'));
     },
   },
   {

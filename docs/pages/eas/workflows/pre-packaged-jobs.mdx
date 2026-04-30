@@ -6,6 +6,7 @@ description: Learn how to set up and use pre-packaged jobs in EAS Workflows.
 
 import { Collapsible } from '~/ui/components/Collapsible';
 import { FAQ } from '~/ui/components/FAQ';
+import { Prerequisites, Requirement } from '~/ui/components/Prerequisites';
 
 Pre-packaged jobs are ready-to-use workflow jobs that help you automate common tasks like building, submitting, and testing your app. They provide a standardized way to handle these operations without having to write custom job configurations from scratch. This guide covers the available pre-packaged jobs and how to use them in your workflows.
 
@@ -15,9 +16,12 @@ Build your project into an Android or iOS app.
 
 Build jobs can be customized so that you can execute custom commands during the build process. See [Custom builds](/custom-builds/get-started/) for more information.
 
-### Prerequisites
-
-To successfully use the build job, you'll need to complete a build with EAS CLI using the same platform and profile as the pre-packaged job. Learn how to [create your first build](/build/setup/) to get started.
+<Prerequisites>
+  <Requirement title="A completed build from your local machine">
+    Complete a build with EAS CLI using the same platform and profile as the pre-packaged job. Learn
+    how to [create your first build](/build/setup/) to get started.
+  </Requirement>
+</Prerequisites>
 
 ### Syntax
 
@@ -179,9 +183,12 @@ jobs:
 
 Deploy your application using [EAS Hosting](/eas/hosting/introduction).
 
-### Prerequisites
-
-To deploy your application using EAS Hosting, you'll need to set up your project. See [Get Started with EAS Hosting](/eas/hosting/get-started/#prerequisites) for more information.
+<Prerequisites>
+  <Requirement title="A project set up for EAS Hosting">
+    See [Get started with EAS Hosting](/eas/hosting/get-started/#prerequisites) for setup
+    instructions.
+  </Requirement>
+</Prerequisites>
 
 ### Syntax
 
@@ -298,6 +305,14 @@ jobs:
 #### Environment variables
 
 You can pass a list of environment variables into the `env` parameter. These environment variables will be pulled from [EAS environment variables](/eas/environment-variables/). The passed `environment` parameter will be used for the environment variable's environment, which is useful when the same environment variable is defined across different environments.
+
+#### Parameters
+
+You can pass the following parameters into the `params` list:
+
+| Parameter               | Type    | Description                                                                                                                                               |
+| ----------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| unstable_skip_cng_check | boolean | Optional. Whether to skip the check for [Continuous Native Generation (CNG)](/workflow/continuous-native-generation/) compatibility. Defaults to `false`. |
 
 #### Outputs
 
@@ -487,9 +502,14 @@ jobs:
 
 Submit an Android or iOS build to the app store using EAS Submit.
 
-### Prerequisites
-
-Submission jobs require additional configuration to run within a CI/CD process. See our [Apple App Store CI/CD submission guide](/submit/ios/#submitting-your-app-using-cicd-services) and [Google Play Store CI/CD submission guide](/submit/android/#submitting-your-app-using-cicd-services) for more information.
+<Prerequisites>
+  <Requirement title="CI/CD submission configuration">
+    Submission jobs require additional configuration to run within a CI/CD process. See the [Google
+    Play Store CI/CD submission guide](/submit/android/#submitting-your-app-using-cicd-services) and
+    [Apple App Store CI/CD submission guide](/submit/ios/#submitting-your-app-using-cicd-services)
+    for more information.
+  </Requirement>
+</Prerequisites>
 
 ### Syntax
 
@@ -582,9 +602,13 @@ jobs:
 
 Distribute iOS builds to TestFlight internal and external testing groups. This is an alternative to the iOS submit job for when you need more advanced TestFlight features. If you need to control test groups, changelog, or Beta App Review submission, use the `testflight` job instead of submit.
 
-### Prerequisites
-
-TestFlight jobs require an iOS build created with `distribution: store`. You'll need to have your Apple Developer account configured. See the [TestFlight submission guide](/submit/ios/#submitting-your-app-using-cicd-services) for more information.
+<Prerequisites>
+  <Requirement title="An iOS store build and Apple Developer account">
+    TestFlight jobs require an iOS build created with `distribution: store` and an Apple Developer
+    account configured. See the [TestFlight submission
+    guide](/submit/ios/#submitting-your-app-using-cicd-services) for more information.
+  </Requirement>
+</Prerequisites>
 
 ### Syntax
 
@@ -684,9 +708,13 @@ jobs:
 
 Publish an update using [EAS Update](/eas-update/introduction/).
 
-### Prerequisites
-
-To publish update previews and to send over-the-air updates, you'll need to run `npx eas-cli@latest update:configure`, then create new builds. Learn more about [configuring EAS Update](/eas-update/getting-started/#prerequisites).
+<Prerequisites>
+  <Requirement title="EAS Update configured">
+    To publish update previews and to send over-the-air updates. Run `npx eas-cli@latest
+    update:configure`, then create new builds. Learn more about [configuring EAS
+    Update](/eas-update/getting-started/#prerequisites).
+  </Requirement>
+</Prerequisites>
 
 ### Syntax
 
@@ -834,6 +862,7 @@ jobs:
       maestro_version: string # optional - defaults to latest
       android_system_image_package: string # optional
       device_identifier: string | { android: string, ios: string } # optional
+      output_format: string # optional - defaults to junit
 ```
 
 #### Parameters
@@ -850,7 +879,7 @@ You can pass the following parameters into the `params` list:
 | include_tags                 | string or string[]                                    | Optional. Flow tags to include in the tests. Will be passed to Maestro as `--include-tags`.                                                                                                                                                                                                                                                                                                                                           |
 | exclude_tags                 | string or string[]                                    | Optional. Flow tags to exclude from the tests. Will be passed to Maestro as `--exclude-tags`.                                                                                                                                                                                                                                                                                                                                         |
 | maestro_version              | string                                                | Optional. Version of Maestro to use for the tests. If not provided, the latest version will be used.                                                                                                                                                                                                                                                                                                                                  |
-| output_format                | string                                                | Optional. Maestro test report format. Will be passed to Maestro as `--format`. Can be `junit` or other supported formats.                                                                                                                                                                                                                                                                                                             |
+| output_format                | string                                                | Optional. Maestro test report format. Defaults to `junit`. Will be passed to Maestro as `--format`. Can be `junit` or other supported formats.                                                                                                                                                                                                                                                                                        |
 | android_system_image_package | string                                                | Optional. Android Emulator system image package to use. Run `sdkmanager --list` on your machine to list available packages. Choose an `x86_64` variant. Examples: `system-images;android-36;google_apis;x86_64`, `system-images;android-35-ext15;google_apis_playstore;x86_64`. Note that newer images require more computing resources, for which you may want to use large runners.                                                 |
 | device_identifier            | string or `{ android?: string, ios?: string }` object | Optional. Device identifier to use for the tests. You can also use a single-value expression like `pixel_6`, `iPhone 16 Plus` or `${{ needs.build.outputs.platform == "android" ? "pixel_6" : "iPhone 16 Plus" }}` and an object like `device_identifier: { android: "pixel_6", ios: "iPhone 16 Plus" }`. Note that iOS devices availability differs across runner images. A list of available devices can be found in the jobs logs. |
 | skip_build_check             | boolean                                               | Optional. Skip validation of the build (whether an iOS build is a simulator build). Defaults to false.                                                                                                                                                                                                                                                                                                                                |
@@ -902,7 +931,7 @@ jobs:
 
 <Collapsible summary="Using Maestro prefixed environment variables">
 
-Maestro can automatically read environment variables in a workflow when the variable is prefixed by `MAESTRO_`. For more information, see the [Maestro documentation on shell variables](https://docs.maestro.dev/advanced/parameters-and-constants#accessing-variables-from-the-shell).
+Maestro can automatically read environment variables in a workflow when the variable is prefixed by `MAESTRO_`. For more information, see the [Maestro documentation on shell variables](https://docs.maestro.dev/maestro-flows/flow-control-and-logic/parameters-and-constants#accessing-shell-variables).
 
 ```yaml .eas/workflows/maestro-basic.yml
 name: Basic Maestro Test
@@ -942,7 +971,7 @@ jobs:
 
 <Collapsible summary="Saving screenshots and recordings">
 
-To save assets created by Maestro commands (such as [`takeScreenshot`](https://docs.maestro.dev/api-reference/commands/takescreenshot) or [`startRecording`](https://docs.maestro.dev/api-reference/commands/startrecording)) to use for debugging later, use the `MAESTRO_TESTS_DIR` environment variable.
+To save assets created by Maestro commands (such as [`takeScreenshot`](https://docs.maestro.dev/reference/commands-available/takescreenshot) or [`startRecording`](https://docs.maestro.dev/reference/commands-available/startrecording)) to use for debugging later, use the `MAESTRO_TESTS_DIR` environment variable.
 
 In your Maestro flow file, specify the asset locations:
 
@@ -965,7 +994,7 @@ The assets will be available within the "Maestro Test Results" artifact in the A
 
 Run Maestro tests on Maestro Cloud.
 
-> **important** This requires a Maestro Cloud account and Cloud Plan subscription. Go to [Maestro docs](https://docs.maestro.dev/cloud/run-maestro-tests-in-the-cloud) to learn more.
+> **important** This requires a Maestro Cloud account and Cloud Plan subscription. Go to [Maestro docs](https://docs.maestro.dev/maestro-cloud/run-tests-on-maestro-cloud) to learn more.
 
 ### Syntax
 
@@ -1058,7 +1087,7 @@ jobs:
 
 <Collapsible summary="Using Maestro prefixed environment variables">
 
-Maestro can automatically read environment variables in a workflow when the variable is prefixed by `MAESTRO_`. For more information, see the [Maestro documentation on shell variables](https://docs.maestro.dev/advanced/parameters-and-constants#accessing-variables-from-the-shell).
+Maestro can automatically read environment variables in a workflow when the variable is prefixed by `MAESTRO_`. For more information, see the [Maestro documentation on shell variables](https://docs.maestro.dev/maestro-flows/flow-control-and-logic/parameters-and-constants#accessing-shell-variables).
 
 ```yaml .eas/workflows/maestro-basic.yml
 name: Basic Maestro Test
@@ -1108,7 +1137,7 @@ jobs:
 
 ## Slack
 
-Send a message to a Slack channel using a [Slack webhook URL](https://api.slack.com/messaging/webhooks).
+Send a message to a Slack channel using a [Slack webhook URL](https://docs.slack.dev/messaging/sending-messages-using-incoming-webhooks).
 
 ### Syntax
 
@@ -1130,7 +1159,7 @@ You can pass the following parameters into the `params` list:
 | ----------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | webhook_url | string | Required. The Slack webhook URL to send the message to. Currently only hardcoded strings are supported. Using webhooks stored in `env` are upcoming but not yet supported. |
 | message     | string | Required if payload is not provided. The message to send.                                                                                                                  |
-| payload     | object | Required if message is not provided. The [Slack Block Kit](https://api.slack.com/block-kit) payload to send.                                                               |
+| payload     | object | Required if message is not provided. The [Slack Block Kit](https://docs.slack.dev/block-kit) payload to send.                                                              |
 
 ### Examples
 
@@ -1213,9 +1242,12 @@ jobs:
 
 Automatically post reports of your workflow's completed builds, updates, and deployments to GitHub pull requests. It's particularly useful for providing instant feedback on PR builds, sharing test builds with QR codes for easy device testing, displaying EAS Hosting deployment previews, and automating deployment notifications. You can also override the comment contents by providing the `payload` parameter.
 
-### Prerequisites
-
-To use the GitHub Comment job, your project must have a GitHub repository connected. Learn how to [connect your GitHub repository](/build/building-from-github) to get started.
+<Prerequisites>
+  <Requirement title="A GitHub repository connected to your project">
+    To use the GitHub Comment job, your project must have a GitHub repository connected. Learn how
+    to [connect your GitHub repository](/build/building-from-github/) to get started.
+  </Requirement>
+</Prerequisites>
 
 ### Syntax
 
@@ -1656,6 +1688,8 @@ jobs:
       repack_version: string # optional
 ```
 
+> **Note:** If the build might still be in progress, use [`get-build`](#get-build) with `wait_for_in_progress: true`, then pass its `build_id` to `repack`.
+
 ### Common questions
 
 <FAQ>
@@ -1665,7 +1699,7 @@ jobs:
 Repack job is suitable for the following use cases:
 
 - Reducing CI build times by reusing existing builds
-- Trigging full native builds when required
+- Triggering full native builds when required
 - Delivering faster feedback loops to your team
 
 Repack job is not suitable for the following use cases:
@@ -1685,6 +1719,7 @@ You can pass the following parameters into the `params` list:
 | build_id            | string  | Required. The source build ID of the build to repack.                                                                                       |
 | profile             | string  | Optional. The build profile to use. Defaults to the profile of the source build retrieved from `build_id`.                                  |
 | embed_bundle_assets | boolean | Optional. Whether to embed the bundle assets in the repacked build. By default, this is automatically determined based on the source build. |
+| js_bundle_only      | boolean | Optional. Whether to only repack the JavaScript bundle. Defaults to false, which means the entire app metadata will be updated.             |
 | message             | string  | Optional. Custom message attached to the build. Corresponds to the `--message` flag when running `eas build`.                               |
 | repack_version      | string  | Optional. The version of the `@expo/repack-app` to use. Defaults to the latest version.                                                     |
 

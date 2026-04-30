@@ -14,6 +14,24 @@ public final class ExpoUIModule: Module {
       }
     }
 
+    // MARK: - Observable State
+
+    makeWorkletCallbackClass()
+
+    Class(ObservableState.self) {
+      Constructor { (initial: [String: Any]) -> ObservableState in
+        return ObservableState(value: initial["value"])
+      }
+
+      Function("getValue") { (state: ObservableState) -> Any in
+        return state.value ?? NSNull()
+      }
+
+      Function("setValue") { (state: ObservableState, wrapper: [String: Any]) in
+        state.value = wrapper["value"]
+      }
+    }
+
     // MARK: - Module Functions
 
     AsyncFunction("completeRefresh") { (id: String) in
@@ -85,6 +103,8 @@ public final class ExpoUIModule: Module {
     ExpoUIView(GaugeView.self)
     ExpoUIView(GroupView.self)
     ExpoUIView(HStackView.self)
+    ExpoUIView(LazyHStackView.self)
+    ExpoUIView(LazyVStackView.self)
     ExpoUIView(ImageView.self)
     ExpoUIView(LabelView.self)
     ExpoUIView(ListView.self)
@@ -114,7 +134,15 @@ public final class ExpoUIModule: Module {
     ExpoUIView(ConcentricRectangleView.self)
     ExpoUIView(DividerView.self)
     ExpoUIView(PopoverView.self)
+    ExpoUIView(OverlayView.self)
+    ExpoUIView(MaskView.self)
     ExpoUIView(GridView.self)
     ExpoUIView(AccessoryWidgetBackgroundView.self)
+    ExpoUIView(LinkView.self)
+    ExpoUIView(TabView.self)
+    ExpoUIView(Tab.self)
+
+    // Experimental SwiftUI state support to trigger synchronous state updates from UI worklet.
+    ExpoUIView(SyncToggleView.self)
   }
 }

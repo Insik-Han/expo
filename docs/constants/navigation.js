@@ -248,7 +248,7 @@ export const general = [
     makeGroup('Router 101', [
       makePage('router/basics/core-concepts.mdx'),
       makePage('router/basics/notation.mdx'),
-      makePage('router/basics/layout.mdx'),
+      makePage('router/basics/navigation-layouts.mdx'),
       makePage('router/basics/navigation.mdx'),
       makePage('router/basics/common-navigation-patterns.mdx'),
     ]),
@@ -310,6 +310,7 @@ export const general = [
       makeSection('Tutorials', [
         makePage('modules/native-module-tutorial.mdx'),
         makePage('modules/native-view-tutorial.mdx'),
+        makePage('modules/inline-modules-tutorial.mdx'),
         makePage('modules/config-plugin-and-native-module-tutorial.mdx'),
         makePage('modules/use-standalone-expo-module-in-your-project.mdx'),
         makePage('modules/third-party-library.mdx'),
@@ -318,6 +319,7 @@ export const general = [
       ]),
       makeSection('Reference', [
         makePage('modules/module-api.mdx'),
+        makePage('modules/inline-modules-reference.mdx'),
         makePage('modules/android-lifecycle-listeners.mdx'),
         makePage('modules/appdelegate-subscribers.mdx'),
         makePage('modules/autolinking.mdx'),
@@ -506,6 +508,7 @@ export const eas = [
         makePage('build-reference/app-extensions.mdx'),
         makePage('build-reference/easignore.mdx'),
         makePage('build-reference/npx-testflight.mdx'),
+        makePage('build-reference/repack.mdx'),
         makePage('build-reference/limitations.mdx'),
       ],
       { expanded: false }
@@ -579,6 +582,16 @@ export const eas = [
     ),
   ]),
   makeSection('EAS Insights', [makePage('eas-insights/introduction.mdx')]),
+  makeSection('Expo Observe', [
+    makePage('eas/observe/introduction.mdx'),
+    makePage('eas/observe/get-started.mdx'),
+    makePage('eas/observe/dashboard.mdx'),
+    makePage('eas/observe/configuration.mdx'),
+    makeGroup('Reference', [
+      makePage('eas/observe/reference/metrics.mdx'),
+      makePage('eas/observe/reference/troubleshooting.mdx'),
+    ]),
+  ]),
   makeSection('Distribution', [
     makePage('distribution/introduction.mdx'),
     makePage('distribution/app-stores.mdx'),
@@ -679,7 +692,6 @@ const archive = [
     makePage('archive/publishing-websites-webpack.mdx'),
     makePage('archive/customizing-webpack.mdx'),
     makePage('archive/e2e-tests.mdx'),
-    makePage('archive/glossary.mdx'),
   ]),
 ];
 
@@ -692,10 +704,20 @@ const versionsReference = VERSIONS.reduce(
       makeSection('Configuration files', pagesFromDir(`versions/${version}/config`), {
         expanded: true,
       }),
+      ...(fs.existsSync(path.resolve(PAGES_DIR, `versions/${version}/sdk/router`))
+        ? [
+            makeSection('Expo Router', pagesFromDir(`versions/${version}/sdk/router`), {
+              expanded: true,
+              hideIcon: true,
+            }),
+          ]
+        : []),
       makeSection(
         'Expo SDK',
         shiftEntryToFront(
-          pagesFromDir(`versions/${version}/sdk`).filter(entry => !entry.inExpoGo),
+          pagesFromDir(`versions/${version}/sdk`).filter(
+            entry => !entry.inExpoGo && entry.name !== 'Router'
+          ),
           entry => entry.name === 'Expo'
         ),
         { expanded: true }
@@ -717,6 +739,7 @@ const versionsReference = VERSIONS.reduce(
         [
           makePage('more/expo-cli.mdx'),
           makePage('more/create-expo.mdx'),
+          makePage('more/create-expo-module.mdx'),
           makePage('more/qr-codes.mdx'),
           makePage('more/release-statuses.mdx'),
           makePage('more/glossary-of-terms.mdx'),

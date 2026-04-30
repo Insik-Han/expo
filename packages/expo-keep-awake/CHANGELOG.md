@@ -4,9 +4,13 @@
 
 ### 🛠 Breaking changes
 
+- Bumped minimum iOS/tvOS version to 16.4, macOS to 13.4. ([#43296](https://github.com/expo/expo/pull/43296) by [@tsapeta](https://github.com/tsapeta))
+
 ### 🎉 New features
 
 ### 🐛 Bug fixes
+
+- fix(keep-awake): catch activation promise rejection on Android ([#45006](https://github.com/expo/expo/pull/45006) by [@cortinico](https://github.com/cortinico))
 
 ### 💡 Others
 
