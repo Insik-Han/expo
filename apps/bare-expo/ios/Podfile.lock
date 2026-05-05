@@ -332,7 +332,7 @@ PODS:
     - ExpoModulesCore
   - ExpoAppleAuthentication (56.0.0):
     - ExpoModulesCore
-  - ExpoAppMetrics (0.1.7):
+  - ExpoAppMetrics (56.0.0):
     - ExpoModulesCore
     - EXUpdatesInterface
     - hermes-engine
@@ -356,7 +356,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - ExpoAppMetrics/Tests (0.1.7):
+  - ExpoAppMetrics/Tests (56.0.0):
     - ExpoModulesCore
     - EXUpdatesInterface
     - hermes-engine
@@ -590,7 +590,7 @@ PODS:
   - ExpoNotifications/Tests (56.0.0):
     - ExpoModulesCore
     - ExpoModulesTestCore
-  - ExpoObserve (0.1.7):
+  - ExpoObserve (56.0.0):
     - EASClient
     - ExpoAppMetrics
     - ExpoModulesCore
@@ -615,7 +615,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - ExpoObserve/Tests (0.1.7):
+  - ExpoObserve/Tests (56.0.0):
     - EASClient
     - ExpoAppMetrics
     - ExpoModulesCore
@@ -3934,7 +3934,7 @@ SPEC CHECKSUMS:
   ExpoAgeRange: cf86ce89f9dcef583009befbd9f2be0a68a02edd
   ExpoAppIntegrity: a145563d5782e7986b8049d7420934fad2a8f46e
   ExpoAppleAuthentication: f019fcbd9bdea1a3158aa936a5e1e26891652fd4
-  ExpoAppMetrics: ee4217262021a90c2499d104609ae107540c33f6
+  ExpoAppMetrics: c9b3be86bb21bb92eefb1a74749f350d46c51c43
   ExpoAsset: a60415645c0df44311c3f91de12641f53b022786
   ExpoAudio: e9f6100cbd0c61d991ae5cb699b22b6c3b4db041
   ExpoBackgroundFetch: a78cee242f4318d064ed9d60a97c997528d16f74
@@ -3982,7 +3982,7 @@ SPEC CHECKSUMS:
   ExpoModulesWorkletsAdapter: fb7bb06e9b617561f10fa02a20e31206cc00d138
   ExpoNetwork: 23eca2e819b9bed3f74ba866401cb8bc481d90c7
   ExpoNotifications: 98b903ae77c702da2feb1d065d7fc62d40dc720c
-  ExpoObserve: d5a52bd0670d1b2bc24a1d59cf9322f3c843a045
+  ExpoObserve: 219630651e73e8ab63e768287daf35c62beff909
   ExpoPrint: 11940265e67847e7f98231a6d654f3c8df41b7c1
   ExpoScreenCapture: 49513bd6d872808a5f79a26004fe7cb234d08bd5
   ExpoScreenOrientation: 85e9fa0920f61f98aac4b0f8c8db7928ccac1b77

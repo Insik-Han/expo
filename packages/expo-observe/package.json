@@ -1,7 +1,7 @@
 {
   "name": "expo-observe",
   "title": "Expo Observe",
-  "version": "0.1.7",
+  "version": "56.0.0",
   "description": "Expo module that dispatches collected app metrics to EAS Observe",
   "main": "src/index.ts",
   "types": "build/index.d.ts",
@@ -32,7 +32,7 @@
   "author": "650 Industries, Inc.",
   "license": "MIT",
   "dependencies": {
-    "expo-app-metrics": "workspace:~0.1.7",
+    "expo-app-metrics": "56.0.0",
     "expo-eas-client": "56.0.0"
   },
   "devDependencies": {
