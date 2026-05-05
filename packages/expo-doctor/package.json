@@ -1,6 +1,6 @@
 {
   "name": "expo-doctor",
-  "version": "1.19.0",
+  "version": "1.19.1",
   "main": "build/index.js",
   "description": "Check your Expo project for known issues",
   "keywords": [
@@ -50,7 +50,7 @@
     "debug": "^4.3.4",
     "expo-modules-autolinking": "56.0.0",
     "expo-module-scripts": "56.0.0",
-    "expo": "56.0.0-preview.0",
+    "expo": "56.0.0-preview.1",
     "getenv": "^2.0.0",
     "glob": "^13.0.0",
     "ignore": "^5.3.2",

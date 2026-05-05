@@ -13,7 +13,7 @@
     "@react-navigation/bottom-tabs": "^7.15.5",
     "@react-navigation/elements": "^2.9.10",
     "@react-navigation/native": "^7.1.33",
-    "expo": "56.0.0-preview.0",
+    "expo": "56.0.0-preview.1",
     "expo-brownfield": "56.0.0",
     "expo-constants": "56.0.0",
     "expo-device": "56.0.0",

@@ -115,7 +115,7 @@
     ]
   },
   "peerDependencies": {
-    "expo": "56.0.0-preview.0",
+    "expo": "56.0.0-preview.1",
     "expo-router": "56.0.0",
     "react-native": "*"
   },

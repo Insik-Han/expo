@@ -18,7 +18,7 @@
     "@react-native-segmented-control/segmented-control": "2.5.7",
     "@shopify/react-native-skia": "2.6.2",
     "@stripe/stripe-react-native": "0.64.0",
-    "expo": "56.0.0-preview.0",
+    "expo": "56.0.0-preview.1",
     "expo-application": "56.0.0",
     "expo-asset": "56.0.0",
     "expo-audio": "56.0.0",

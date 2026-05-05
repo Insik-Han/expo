@@ -91,7 +91,7 @@
     "@expo/log-box": "56.0.0",
     "@expo/metro-runtime": "56.0.0",
     "@testing-library/react-native": ">= 13.2.0",
-    "expo": "56.0.0-preview.0",
+    "expo": "56.0.0-preview.1",
     "expo-constants": "56.0.0",
     "expo-linking": "56.0.0",
     "react": "*",

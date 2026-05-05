@@ -40,7 +40,7 @@
   },
   "peerDependencies": {
     "@babel/runtime": "^7.20.0",
-    "expo": "56.0.0-preview.0",
+    "expo": "56.0.0-preview.1",
     "expo-widgets": "56.0.0",
     "react-refresh": ">=0.14.0 <1.0.0"
   },

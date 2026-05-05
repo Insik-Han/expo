@@ -70,7 +70,7 @@
     "glob": "^13.0.6"
   },
   "peerDependencies": {
-    "expo": "56.0.0-preview.0",
+    "expo": "56.0.0-preview.1",
     "react": "*"
   }
 }
