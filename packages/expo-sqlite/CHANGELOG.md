@@ -12,8 +12,6 @@
 
 ### 🐛 Bug fixes
 
-- Add explicit secure context error for `web/wa-sqlite/AccessHandlePoolVFS.js` ([#40605](https://github.com/expo/expo/pull/40605) by [@BDav24](https://github.com/BDav24))
-
 ### 💡 Others
 
 - [iOS] Updated sync function signatures (`runSync`, `applyChangesetSync`, `invertChangesetSync`) to accept `any AnyArrayBuffer` in place of the removed `JavaScriptArrayBuffer`. ([#44337](https://github.com/expo/expo/pull/44337) by [@tsapeta](https://github.com/tsapeta))
@@ -21,6 +19,28 @@
 - Statement bind params now use native `ArrayBuffer`s for blob columns. ([#42639](https://github.com/expo/expo/pull/42639) by [@barthap](https://github.com/barthap))
 - [Android] Returned blob columns now use native `ArrayBuffer`s. ([#42640](https://github.com/expo/expo/pull/42640) by [@barthap](https://github.com/barthap))
 - [iOS] Returned blob columns now use native `ArrayBuffer`s. ([#42642](https://github.com/expo/expo/pull/42642) by [@barthap](https://github.com/barthap))
+
+## 55.0.15 - 2026-04-09
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.14 - 2026-04-07
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.13 - 2026-04-02
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.12 - 2026-04-02
+
+### 🐛 Bug fixes
+
+- Add explicit secure context error for `web/wa-sqlite/AccessHandlePoolVFS.js` ([#40605](https://github.com/expo/expo/pull/40605) by [@BDav24](https://github.com/BDav24))
+
+## 55.0.11 - 2026-03-17
+
+_This version does not introduce any user-facing changes._
 
 ## 55.0.10 — 2026-02-25
 

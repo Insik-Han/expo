@@ -12,6 +12,18 @@
 
 ### 💡 Others
 
+## 55.0.5 - 2026-04-21
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.4 - 2026-04-02
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.3 - 2026-04-02
+
+### 💡 Others
+
 - [iOS] Added missing `Foundation.h` imports in header files. ([#44248](https://github.com/expo/expo/pull/44248) by [@chrfalch](https://github.com/chrfalch))
 
 ## 55.0.2 — 2026-01-26

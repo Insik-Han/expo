@@ -14,8 +14,6 @@
 
 ### 🐛 Bug fixes
 
-- Opt `"widget"` functions for `expo-widgets` out of react-compiler ([#43451](https://github.com/expo/expo/pull/43451) by [@kitten](https://github.com/kitten))
-- Fix `"use no memo"` and `"use no forget"` default opt-out directives being ineffective in react-compiler transform ([#43521](https://github.com/expo/expo/pull/43521) by [@Titozzz](https://github.com/Titozzz), [@kitten](https://github.com/kitten))
 - Update plugin detection to resolve from project root ([#44197](https://github.com/expo/expo/pull/44197) by [@kitten](https://github.com/kitten))
 - Fixed DOM Components rendering issues on Android 9 devices. ([#43156](https://github.com/expo/expo/pull/43156) by [@kudo](https://github.com/kudo))
 
@@ -32,6 +30,62 @@
 ### ⚠️ Notices
 
 - Added support for React Native 0.84.x. ([#43018](https://github.com/expo/expo/pull/43018) by [@chrfalch](https://github.com/chrfalch))
+
+## 55.0.21 - 2026-05-05
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.20 - 2026-05-04
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.19 - 2026-05-01
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.18 - 2026-04-21
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.17 - 2026-04-10
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.16 - 2026-04-07
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.15 - 2026-04-02
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.14 - 2026-04-02
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.13 - 2026-03-27
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.12 - 2026-03-18
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.11 - 2026-03-11
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.10 - 2026-02-27
+
+### 🐛 Bug fixes
+
+- Fix `"use no memo"` and `"use no forget"` default opt-out directives being ineffective in react-compiler transform ([#43521](https://github.com/expo/expo/pull/43521) by [@Titozzz](https://github.com/Titozzz), [@kitten](https://github.com/kitten))
+
+## 55.0.9 - 2026-02-26
+
+### 🐛 Bug fixes
+
+- Opt `"widget"` functions for `expo-widgets` out of react-compiler ([#43451](https://github.com/expo/expo/pull/43451) by [@kitten](https://github.com/kitten))
 
 ## 55.0.8 — 2026-02-25
 

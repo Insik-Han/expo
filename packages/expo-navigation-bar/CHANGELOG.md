@@ -24,6 +24,22 @@
 - Removed `react-native-is-edge-to-edge` dependency. ([#44196](https://github.com/expo/expo/pull/44196) by [@zoontek](https://github.com/zoontek))
 - Deprecated `barStyle` and `visibility` config plugin properties in favor of `style` and `hidden`. ([#43978](https://github.com/expo/expo/pull/43978) by [@zoontek](https://github.com/zoontek))
 
+## 55.0.12 - 2026-04-09
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.11 - 2026-04-07
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.10 - 2026-04-02
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.9 - 2026-03-17
+
+_This version does not introduce any user-facing changes._
+
 ## 55.0.8 — 2026-02-25
 
 ### 🛠 Breaking changes

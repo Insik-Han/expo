@@ -12,9 +12,38 @@
 
 ### 💡 Others
 
+- Fixed plugin setup in `.claude/settings.json`. ([#44951](https://github.com/expo/expo/pull/44951) by [@kudo](https://github.com/kudo))
+
+## 3.6.13 - 2026-04-21
+
+### 💡 Others
+
 - Replace tar dependency logic with `multitars` package ([#44764](https://github.com/expo/expo/pull/44764) by [@kitten](https://github.com/kitten))
 - Update to `multitars@^1.0.0` ([#44774](https://github.com/expo/expo/pull/44774) by [@kitten](https://github.com/kitten))
-- Fixed plugin setup in `.claude/settings.json`. ([#44951](https://github.com/expo/expo/pull/44951) by [@kudo](https://github.com/kudo))
+
+## 3.6.12 - 2026-04-13
+
+_This version does not introduce any user-facing changes._
+
+## 3.6.11 - 2026-04-09
+
+_This version does not introduce any user-facing changes._
+
+## 3.6.10 - 2026-04-07
+
+_This version does not introduce any user-facing changes._
+
+## 3.6.9 - 2026-04-02
+
+_This version does not introduce any user-facing changes._
+
+## 3.6.8 - 2026-04-02
+
+_This version does not introduce any user-facing changes._
+
+## 3.6.7 - 2026-03-18
+
+_This version does not introduce any user-facing changes._
 
 ## 3.6.6 — 2026-02-25
 

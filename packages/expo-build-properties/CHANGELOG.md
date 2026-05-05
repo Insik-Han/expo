@@ -17,6 +17,22 @@
 - Mark `ios.deploymentTarget` as deprecated in favor of the built-in `ios.deploymentTarget` property (SDK 56 and greater). ([#43700](https://github.com/expo/expo/pull/43700) by [@EvanBacon](https://github.com/EvanBacon))
 - Update useHermesV1 to support React Native 0.84 ([#43625](https://github.com/expo/expo/pull/43625) by [@gabrieldonadel](https://github.com/gabrieldonadel))
 
+## 55.0.13 - 2026-04-09
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.12 - 2026-04-07
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.11 - 2026-04-02
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.10 - 2026-03-17
+
+_This version does not introduce any user-facing changes._
+
 ## 55.0.9 — 2026-02-25
 
 _This version does not introduce any user-facing changes._

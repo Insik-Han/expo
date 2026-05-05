@@ -14,7 +14,36 @@
 
 - Removed unused `splash`, `ios.splash` / `android.splash` and `jsEngine` accessors. ([#44732](https://github.com/expo/expo/pull/44732) by [@zoontek](https://github.com/zoontek))
 - Replaced deprecated `androidStatusBar` and `androidNavigationBar` manifest accessors with `extra["expo-status-bar"]` and `extra["expo-navigation-bar"]`. ([#44469](https://github.com/expo/expo/pull/44469) by [@zoontek](https://github.com/zoontek))
+
+## 55.0.16 - 2026-04-21
+
+### 💡 Others
+
 - Remove unused `@expo/config` dependency ([#44722](https://github.com/expo/expo/pull/44722) by [@kitten](https://github.com/kitten))
+
+## 55.0.15 - 2026-04-09
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.14 - 2026-04-07
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.13 - 2026-04-02
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.12 - 2026-04-02
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.11 - 2026-03-19
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.10 - 2026-03-17
+
+_This version does not introduce any user-facing changes._
 
 ## 55.0.9 — 2026-02-25
 

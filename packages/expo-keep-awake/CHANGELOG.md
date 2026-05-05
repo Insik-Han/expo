@@ -10,9 +10,25 @@
 
 ### 🐛 Bug fixes
 
+### 💡 Others
+
+## 55.0.8 - 2026-05-05
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.7 - 2026-05-01
+
+### 🐛 Bug fixes
+
 - fix(keep-awake): catch activation promise rejection on Android ([#45006](https://github.com/expo/expo/pull/45006) by [@cortinico](https://github.com/cortinico))
 
-### 💡 Others
+## 55.0.6 - 2026-04-02
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.5 - 2026-04-02
+
+_This version does not introduce any user-facing changes._
 
 ## 55.0.4 — 2026-02-20
 

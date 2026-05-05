@@ -18,6 +18,30 @@
 - Mark legacy API deprecated ([#44845](https://github.com/expo/expo/pull/44845) by [@Wenszel](https://github.com/Wenszel))
 - [next] Improve contact observer implementation ([#44773](https://github.com/expo/expo/pull/44773) by [@Wenszel](https://github.com/Wenszel))
 
+## 55.0.14 - 2026-05-05
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.13 - 2026-04-09
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.12 - 2026-04-07
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.11 - 2026-04-02
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.10 - 2026-04-02
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.9 - 2026-03-17
+
+_This version does not introduce any user-facing changes._
+
 ## 55.0.8 — 2026-02-25
 
 ### 🐛 Bug fixes

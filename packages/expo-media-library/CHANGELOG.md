@@ -23,8 +23,6 @@
 
 ### 🐛 Bug fixes
 
-- [Android] Read video dimensions from MediaStore cursor instead of opening each file with `MediaMetadataRetriever`, fixing extremely slow `getAssetsAsync` on devices with many videos. ([#44714](https://github.com/expo/expo/pull/44714) by [@oeddyo](https://github.com/oeddyo))
-
 ### 💡 Others
 
 - Mark legacy API deprecated ([#44605](https://github.com/expo/expo/pull/44605) by [@Wenszel](https://github.com/Wenszel))
@@ -33,6 +31,36 @@
 ### ⚠️ Notices
 
 - Added support for React Native 0.84.x. ([#43018](https://github.com/expo/expo/pull/43018) by [@chrfalch](https://github.com/chrfalch))
+
+## 55.0.16 - 2026-05-05
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.15 - 2026-04-21
+
+### 🐛 Bug fixes
+
+- [Android] Read video dimensions from MediaStore cursor instead of opening each file with `MediaMetadataRetriever`, fixing extremely slow `getAssetsAsync` on devices with many videos. ([#44714](https://github.com/expo/expo/pull/44714) by [@oeddyo](https://github.com/oeddyo))
+
+## 55.0.14 - 2026-04-09
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.13 - 2026-04-07
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.12 - 2026-04-02
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.11 - 2026-04-02
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.10 - 2026-03-17
+
+_This version does not introduce any user-facing changes._
 
 ## 55.0.9 — 2026-02-25
 

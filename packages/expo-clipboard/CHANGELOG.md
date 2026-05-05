@@ -15,6 +15,26 @@
 
 - [Android] Instead of exporting the `ClipboardFileProvider` use `android:grantUriPermissions` to share image files. ([#44556](https://github.com/expo/expo/pull/44556) by [@behenate](https://github.com/behenate))
 
+## 55.0.13 - 2026-04-09
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.12 - 2026-04-07
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.11 - 2026-04-02
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.10 - 2026-04-02
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.9 - 2026-03-17
+
+_This version does not introduce any user-facing changes._
+
 ## 55.0.8 — 2026-02-25
 
 _This version does not introduce any user-facing changes._

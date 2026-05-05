@@ -12,11 +12,35 @@
 
 ### 🐛 Bug fixes
 
-- Fixed `openAuthSessionAsync` silently failing on iOS 17.4+ when using `https://` redirect URLs without Associated Domains entitlements. The HTTPS universal link callback API is now opt-in via the `preferUniversalLinks` option. ([#44452](https://github.com/expo/expo/pull/44452) by [@vonovak](https://github.com/vonovak))
-
 ### 💡 Others
 
 - [Android] Bring back the `experimentalLauncherActivity` config plugin option. ([#44073](https://github.com/expo/expo/pull/44073) by [@lukmccall](https://github.com/lukmccall))
+
+## 55.0.15 - 2026-05-05
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.14 - 2026-04-09
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.13 - 2026-04-07
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.12 - 2026-04-02
+
+_This version does not introduce any user-facing changes._
+
+## 55.0.11 - 2026-04-02
+
+### 🐛 Bug fixes
+
+- Fixed `openAuthSessionAsync` silently failing on iOS 17.4+ when using `https://` redirect URLs without Associated Domains entitlements. The HTTPS universal link callback API is now opt-in via the `preferUniversalLinks` option. ([#44452](https://github.com/expo/expo/pull/44452) by [@vonovak](https://github.com/vonovak))
+
+## 55.0.10 - 2026-03-17
+
+_This version does not introduce any user-facing changes._
 
 ## 55.0.9 — 2026-02-25
 

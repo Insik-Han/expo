@@ -8,11 +8,23 @@
 
 ### 🎉 New features
 
-- Native interface access to state machine context. ([#44361](https://github.com/expo/expo/pull/44361) by [@douglowder](https://github.com/douglowder))
-
 ### 🐛 Bug fixes
 
 ### 💡 Others
+
+## 55.1.6 - 2026-04-21
+
+_This version does not introduce any user-facing changes._
+
+## 55.1.5 - 2026-04-02
+
+_This version does not introduce any user-facing changes._
+
+## 55.1.4 - 2026-04-02
+
+### 🎉 New features
+
+- Native interface access to state machine context. ([#44361](https://github.com/expo/expo/pull/44361) by [@douglowder](https://github.com/douglowder))
 
 ## 55.1.3 — 2026-02-25
 
