@@ -37,9 +37,9 @@
     "expo-module-scripts": "56.0.0"
   },
   "peerDependencies": {
-    "expo": "56.0.0-preview.1",
+    "expo": "56.0.0-preview.2",
     "react": "*",
     "react-native": "*",
-    "expo-asset": "56.0.0"
+    "expo-asset": "56.0.1"
   }
 }

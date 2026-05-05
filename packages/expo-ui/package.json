@@ -1,6 +1,6 @@
 {
   "name": "@expo/ui",
-  "version": "56.0.0",
+  "version": "56.0.1",
   "description": "A collection of UI components",
   "sideEffects": [
     "*.fx.js"
@@ -94,7 +94,7 @@
   },
   "peerDependencies": {
     "@babel/core": "*",
-    "expo": "workspace:*",
+    "expo": "56.0.0-preview.1",
     "react": "*",
     "react-dom": "*",
     "react-native": "*",

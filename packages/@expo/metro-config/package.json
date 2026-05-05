@@ -1,6 +1,6 @@
 {
   "name": "@expo/metro-config",
-  "version": "56.0.0",
+  "version": "56.0.1",
   "description": "A Metro config for running React Native projects with the Metro bundler",
   "main": "build/ExpoMetroConfig.js",
   "types": "build/ExpoMetroConfig.d.ts",
@@ -83,7 +83,7 @@
     "resolve-from": "^5.0.0"
   },
   "peerDependencies": {
-    "expo": "56.0.0-preview.1"
+    "expo": "56.0.0-preview.2"
   },
   "peerDependenciesMeta": {
     "expo": {

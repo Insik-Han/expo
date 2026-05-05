@@ -46,7 +46,7 @@
     "abort-controller": "^3.0.0",
     "badgin": "^1.1.5",
     "expo-application": "56.0.0",
-    "expo-constants": "56.0.0"
+    "expo-constants": "56.0.1"
   },
   "devDependencies": {
     "@types/react": "~19.2.0",
@@ -55,7 +55,7 @@
     "memfs": "^3.2.0"
   },
   "peerDependencies": {
-    "expo": "56.0.0-preview.1",
+    "expo": "56.0.0-preview.2",
     "react": "*",
     "react-native": "*"
   }

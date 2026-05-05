@@ -1,6 +1,6 @@
 {
   "name": "expo-keep-awake",
-  "version": "56.0.0",
+  "version": "56.0.1",
   "description": "Provides a React component that prevents the screen sleeping when rendered. It also exposes static methods to control the behavior imperatively.",
   "main": "src/index.ts",
   "types": "build/index.d.ts",
@@ -44,7 +44,7 @@
     "expo-module-scripts": "56.0.0"
   },
   "peerDependencies": {
-    "expo": "56.0.0-preview.1",
+    "expo": "56.0.0-preview.2",
     "react": "*"
   },
   "jest": {

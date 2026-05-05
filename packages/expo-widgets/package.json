@@ -1,6 +1,6 @@
 {
   "name": "expo-widgets",
-  "version": "56.0.0",
+  "version": "56.0.1",
   "description": "Widgets.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -32,7 +32,7 @@
   "homepage": "https://docs.expo.dev/versions/latest/sdk/widgets/",
   "dependencies": {
     "@expo/plist": "0.6.0",
-    "@expo/ui": "56.0.0"
+    "@expo/ui": "56.0.1"
   },
   "devDependencies": {
     "@expo/spawn-async": "^1.7.2",
@@ -43,7 +43,7 @@
     "resolve-workspace-root": "^2.0.0"
   },
   "peerDependencies": {
-    "expo": "56.0.0-preview.1",
+    "expo": "56.0.0-preview.2",
     "react": "*",
     "react-native": "*"
   }

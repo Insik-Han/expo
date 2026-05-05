@@ -1,6 +1,6 @@
 {
   "name": "expo-glass-effect",
-  "version": "56.0.0",
+  "version": "56.0.1",
   "description": "A component that renders a native glass effect view on iOS.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -44,7 +44,7 @@
     "expo-module-scripts": "56.0.0"
   },
   "peerDependencies": {
-    "expo": "56.0.0-preview.1",
+    "expo": "56.0.0-preview.2",
     "react": "*",
     "react-native": "*"
   }

@@ -1,6 +1,6 @@
 {
   "name": "expo-system-ui",
-  "version": "56.0.0",
+  "version": "56.0.1",
   "description": "Interact with system UI elements",
   "main": "build/SystemUI.js",
   "types": "build/SystemUI.d.ts",
@@ -42,7 +42,7 @@
     "expo-module-scripts": "56.0.0"
   },
   "peerDependencies": {
-    "expo": "56.0.0-preview.1",
+    "expo": "56.0.0-preview.2",
     "react-native": "*",
     "react-native-web": "*"
   },
