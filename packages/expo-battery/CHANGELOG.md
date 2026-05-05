@@ -4,15 +4,21 @@
 
 ### 🛠 Breaking changes
 
-- Bumped minimum iOS/tvOS version to 16.4, macOS to 13.4. ([#43296](https://github.com/expo/expo/pull/43296) by [@tsapeta](https://github.com/tsapeta))
-
 ### 🎉 New features
 
 ### 🐛 Bug fixes
 
-- [android] Add `BatteryState.NOT_CHARGING` when power is connected but the battery is not charging (e.g. battery protection); map `BATTERY_STATUS_DISCHARGING` to `UNPLUGGED` only ([#44212](https://github.com/expo/expo/issues/44212)) ([#44451](https://github.com/expo/expo/pull/44451) by [@vj2303](https://github.com/vj2303))
-
 ### 💡 Others
+
+## 56.0.0 — 2026-05-05
+
+### 🛠 Breaking changes
+
+- Bumped minimum iOS/tvOS version to 16.4, macOS to 13.4. ([#43296](https://github.com/expo/expo/pull/43296) by [@tsapeta](https://github.com/tsapeta))
+
+### 🐛 Bug fixes
+
+- [android] Add `BatteryState.NOT_CHARGING` when power is connected but the battery is not charging (e.g. battery protection); map `BATTERY_STATUS_DISCHARGING` to `UNPLUGGED` only ([#44212](https://github.com/expo/expo/issues/44212)) ([#44451](https://github.com/expo/expo/pull/44451) by [@vj2303](https://github.com/vj2303))
 
 ## 55.0.13 - 2026-04-09
 

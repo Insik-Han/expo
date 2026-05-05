@@ -10,6 +10,10 @@
 
 ### 💡 Others
 
+## 56.0.0 — 2026-05-05
+
+### 💡 Others
+
 - Removed unused `ExpoConfigSplash` re-export. ([#44598](https://github.com/expo/expo/pull/44598) by [@zoontek](https://github.com/zoontek))
 
 ## 55.0.16 - 2026-05-05

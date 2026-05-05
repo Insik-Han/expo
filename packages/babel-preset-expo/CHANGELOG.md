@@ -4,6 +4,16 @@
 
 ### 🛠 Breaking changes
 
+### 🎉 New features
+
+### 🐛 Bug fixes
+
+### 💡 Others
+
+## 56.0.0 — 2026-05-05
+
+### 🛠 Breaking changes
+
 - Enable `import.meta` transform by default and rename option to `transformImportMeta` ([#44239](https://github.com/expo/expo/pull/44239) by [@kitten](https://github.com/kitten))
 - Refactor to split Hermes v0/v1 configs and fork away from `@react-native/babel-preset` ([#45337](https://github.com/expo/expo/pull/45337) by [@kitten](https://github.com/kitten))
 - Trim Hermes v1 preset to remove transforms for syntax that Hermes now supports ([#45345](https://github.com/expo/expo/pull/45345) by [@kitten](https://github.com/kitten))

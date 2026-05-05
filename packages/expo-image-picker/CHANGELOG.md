@@ -4,6 +4,16 @@
 
 ### 🛠 Breaking changes
 
+### 🎉 New features
+
+### 🐛 Bug fixes
+
+### 💡 Others
+
+## 56.0.0 — 2026-05-05
+
+### 🛠 Breaking changes
+
 - Bumped minimum iOS/tvOS version to 16.4, macOS to 13.4. ([#43296](https://github.com/expo/expo/pull/43296) by [@tsapeta](https://github.com/tsapeta))
 
 ### 🎉 New features
@@ -13,8 +23,6 @@
 ### 🐛 Bug fixes
 
 - [iOS] Fix `base64` result not being a JPEG data. ([#43806](https://github.com/expo/expo/pull/43806) by [@barthap](https://github.com/barthap))
-
-### 💡 Others
 
 ## 55.0.20 - 2026-05-05
 

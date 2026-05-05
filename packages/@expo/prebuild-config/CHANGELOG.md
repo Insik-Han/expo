@@ -10,6 +10,10 @@
 
 ### 💡 Others
 
+## 56.0.0 — 2026-05-05
+
+### 💡 Others
+
 - Moved splash screen config plugins to `expo-splash-screen`. ([#44598](https://github.com/expo/expo/pull/44598) by [@zoontek](https://github.com/zoontek))
 - Use `AndroidConfig.SystemBars` in default plugins. ([#44469](https://github.com/expo/expo/pull/44469) by [@zoontek](https://github.com/zoontek))
 - Make splash screen `backgroundColor` optional, defaulting to `#ffffff`. ([#44098](https://github.com/expo/expo/pull/44098) by [@zoontek](https://github.com/zoontek))

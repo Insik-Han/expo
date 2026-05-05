@@ -33,13 +33,13 @@
   "license": "MIT",
   "dependencies": {
     "expo-app-metrics": "workspace:~0.1.7",
-    "expo-eas-client": "workspace:~55.0.2"
+    "expo-eas-client": "56.0.0"
   },
   "devDependencies": {
-    "expo-module-scripts": "workspace:*"
+    "expo-module-scripts": "56.0.0"
   },
   "peerDependencies": {
-    "expo": "workspace:*",
+    "expo": "56.0.0-preview.0",
     "react-native": "*"
   }
 }

@@ -4,6 +4,16 @@
 
 ### 🛠 Breaking changes
 
+### 🎉 New features
+
+### 🐛 Bug fixes
+
+### 💡 Others
+
+## 56.0.0 — 2026-05-05
+
+### 🛠 Breaking changes
+
 - Bumped minimum iOS/tvOS version to 16.4, macOS to 13.4. ([#43296](https://github.com/expo/expo/pull/43296) by [@tsapeta](https://github.com/tsapeta))
 
 ### 🎉 New features
@@ -13,8 +23,6 @@
 ### 🐛 Bug fixes
 
 - [Android] Preserve WorkManager cancellation semantics when a background task worker is cancelled. ([#44667](https://github.com/expo/expo/pull/44667) by [@chrfalch](https://github.com/chrfalch))- [Android] Prevent background task registration from replacing an already scheduled or running worker. ([#44663](https://github.com/expo/expo/pull/44663) by [@chrfalch](https://github.com/chrfalch))
-
-### 💡 Others
 
 ## 55.0.17 - 2026-04-21
 

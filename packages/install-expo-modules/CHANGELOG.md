@@ -4,15 +4,21 @@
 
 ### 🛠 Breaking changes
 
+### 🎉 New features
+
+### 🐛 Bug fixes
+
+### 💡 Others
+
+## 0.14.19 — 2026-05-05
+
+### 🛠 Breaking changes
+
 - Bumped minimum iOS/tvOS version to 16.4, macOS to 13.4. ([#43296](https://github.com/expo/expo/pull/43296) by [@tsapeta](https://github.com/tsapeta))
 
 ### 🎉 New features
 
 - Skip pods install on non-darwin platforms. ([#44633](https://github.com/expo/expo/pull/44633) by [@radoslawrolka](https://github.com/radoslawrolka))
-
-### 🐛 Bug fixes
-
-### 💡 Others
 
 ## 0.14.18 - 2026-04-21
 

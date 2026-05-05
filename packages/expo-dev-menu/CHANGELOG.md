@@ -4,6 +4,16 @@
 
 ### 🛠 Breaking changes
 
+### 🎉 New features
+
+### 🐛 Bug fixes
+
+### 💡 Others
+
+## 56.0.0 — 2026-05-05
+
+### 🛠 Breaking changes
+
 - Bumped minimum iOS/tvOS version to 16.4, macOS to 13.4. ([#43296](https://github.com/expo/expo/pull/43296) by [@tsapeta](https://github.com/tsapeta))
 
 ### 🎉 New features
@@ -17,8 +27,6 @@
 - [iOS] Fix deadlock in `DevMenuPackagerConnectionHandler.setup`. ([#44405](https://github.com/expo/expo/pull/44405) by [@alanjhughes](https://github.com/alanjhughes))
 - [iOS] Fix dev menu auto-launch not triggering. The `updateAutoLaunchObserver()` now called from `setAppContext`. ([#45167](https://github.com/expo/expo/pull/45167) by [@alanjhughes](https://github.com/alanjhughes))
 - [iOS] Reconnect the packager to the bundle URL host so expo-cli commands reach the app on physical devices. ([#45195](https://github.com/expo/expo/pull/45195) by [@alanjhughes](https://github.com/alanjhughes))
-
-### 💡 Others
 
 ### ⚠️ Notices
 

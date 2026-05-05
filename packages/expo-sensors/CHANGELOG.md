@@ -4,6 +4,16 @@
 
 ### 🛠 Breaking changes
 
+### 🎉 New features
+
+### 🐛 Bug fixes
+
+### 💡 Others
+
+## 56.0.0 — 2026-05-05
+
+### 🛠 Breaking changes
+
 - Bumped minimum iOS/tvOS version to 16.4, macOS to 13.4. ([#43296](https://github.com/expo/expo/pull/43296) by [@tsapeta](https://github.com/tsapeta))
 
 ### 🎉 New features
@@ -13,8 +23,6 @@
 ### 🐛 Bug fixes
 
 - [iOS] Fixed TCC crash on iOS 26 during Metro reload when `motionPermission: false` — `CMAltimeter.stopRelativeAltitudeUpdates()` now only runs if updates were started. ([#45396](https://github.com/expo/expo/pull/45396) by [@JustinFay01](https://github.com/JustinFay01))
-
-### 💡 Others
 
 ## 55.0.14 - 2026-05-05
 

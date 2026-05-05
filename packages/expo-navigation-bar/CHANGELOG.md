@@ -4,6 +4,16 @@
 
 ### 🛠 Breaking changes
 
+### 🎉 New features
+
+### 🐛 Bug fixes
+
+### 💡 Others
+
+## 56.0.0 — 2026-05-05
+
+### 🛠 Breaking changes
+
 - Removed `setBackgroundColorAsync`, `getBackgroundColorAsync`, `setBorderColorAsync`, `getBorderColorAsync`, `setButtonStyleAsync`, `getButtonStyleAsync`, `setPositionAsync`, `unstable_getPositionAsync`, `setBehaviorAsync`, `getBehaviorAsync` functions, `NavigationBarButtonStyle`, `NavigationBarBehavior`, `NavigationBarPosition` types, and `backgroundColor`, `borderColor`, `behavior`, `position` config plugin properties. ([#44196](https://github.com/expo/expo/pull/44196) by [@zoontek](https://github.com/zoontek))
 
 ### 🎉 New features

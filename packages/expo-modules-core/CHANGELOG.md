@@ -4,6 +4,16 @@
 
 ### 🛠 Breaking changes
 
+### 🎉 New features
+
+### 🐛 Bug fixes
+
+### 💡 Others
+
+## 56.0.0 — 2026-05-05
+
+### 🛠 Breaking changes
+
 - [iOS] Replaced the Objective-C++ JSI layer (`EXJavaScriptRuntime`, `EXJavaScriptObject`, `ExpoModulesHostObject`, `EXSharedObjectUtils`, etc.) with the new `ExpoModulesJSI` Swift package. Third-party native modules depending on these types must migrate to the new Swift-first API. ([#44337](https://github.com/expo/expo/pull/44337) by [@tsapeta](https://github.com/tsapeta))
 - Bumped minimum iOS/tvOS version to 16.4, macOS to 13.4. ([#43296](https://github.com/expo/expo/pull/43296) by [@tsapeta](https://github.com/tsapeta))
 

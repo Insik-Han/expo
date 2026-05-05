@@ -4,6 +4,16 @@
 
 ### 🛠 Breaking changes
 
+### 🎉 New features
+
+### 🐛 Bug fixes
+
+### 💡 Others
+
+## 56.0.0 — 2026-05-05
+
+### 🛠 Breaking changes
+
 - Bumped minimum iOS/tvOS version to 16.4, macOS to 13.4. ([#43296](https://github.com/expo/expo/pull/43296) by [@tsapeta](https://github.com/tsapeta))
 
 ### 🎉 New features
@@ -17,8 +27,6 @@
 - Support registering custom turbo modules from the hosting app ([#44929](https://github.com/expo/expo/pull/44929) by [@gabrieldonadel](https://github.com/gabrieldonadel))
 - [iOS] Add support for iOS prebuilds. ([#45148](https://github.com/expo/expo/pull/45148) by [@gabrieldonadel](https://github.com/gabrieldonadel))
 - [iOS] Add support for using multiple inner app frameworks in one host app via the new `multipleFrameworks` property. ([#45347](https://github.com/expo/expo/pull/45347) by [@gabrieldonadel](https://github.com/gabrieldonadel))
-
-### 🐛 Bug fixes
 
 ### 💡 Others
 

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "expo": "workspace:*",
+    "expo": "56.0.0-preview.0",
     "react-native": "0.85.2",
     "react": "19.2.3",
     "react-native-reanimated": "4.3.0",

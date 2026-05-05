@@ -4,6 +4,16 @@
 
 ### 🛠 Breaking changes
 
+### 🎉 New features
+
+### 🐛 Bug fixes
+
+### 💡 Others
+
+## 56.0.0 — 2026-05-05
+
+### 🛠 Breaking changes
+
 - Bumped minimum iOS/tvOS version to 16.4, macOS to 13.4. ([#43296](https://github.com/expo/expo/pull/43296) by [@tsapeta](https://github.com/tsapeta))
 
 ### 🎉 New features
@@ -13,8 +23,6 @@
 ### 🐛 Bug fixes
 
 - [Android] Foreground service notification icon now falls back to `notification_icon` drawable before `applicationInfo.icon`. The launcher icon is full-color and renders as a solid white square in notifications. ([#44309](https://github.com/expo/expo/pull/44309) by [@creatornader](https://github.com/creatornader))
-
-### 💡 Others
 
 ### ⚠️ Notices
 

@@ -4,13 +4,21 @@
 
 ### 🛠 Breaking changes
 
+### 🎉 New features
+
+### 🐛 Bug fixes
+
+### 💡 Others
+
+## 56.0.0 — 2026-05-05
+
+### 🛠 Breaking changes
+
 - [SwiftUI] Use `fixedSize` modifier for Host `matchContents` ([#44642](https://github.com/expo/expo/pull/44642) by [@nishan](https://github.com/intergalacticspacehighway))
 - [jetpack-compose] Use intrinsic size for Host `matchContents` to match iOS ([#44642](https://github.com/expo/expo/pull/44642) by [@nishan](https://github.com/intergalacticspacehighway))
 - [SwiftUI] `TextField`: removed `defaultValue`, added `text` prop backed by an `ObservableState` (from `useNativeState`), added worklet support for `onTextChange`, and renamed `onValueChange` → `onTextChange`. ([#44988](https://github.com/expo/expo/pull/44988) by [@nishan](https://github.com/intergalacticspacehighway))
 - Bumped minimum iOS/tvOS version to 16.4, macOS to 13.4. ([#43296](https://github.com/expo/expo/pull/43296) by [@tsapeta](https://github.com/tsapeta))
 - [jetpack-compose] Changed `Host` underlying `MaterialTheme` to `MaterialExpressiveTheme`. ([#44896](https://github.com/expo/expo/pull/44896) by [@kudo](https://github.com/kudo))
-
-### 🐛 Bug fixes
 
 ### 🎉 New features
 

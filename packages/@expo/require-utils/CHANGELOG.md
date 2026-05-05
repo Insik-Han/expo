@@ -6,11 +6,15 @@
 
 ### 🎉 New features
 
-- Add option to `resolveFrom` to skip `NODE_PATH` resolution ([#45164](https://github.com/expo/expo/pull/45164) by [@kitten](https://github.com/kitten))
-
 ### 🐛 Bug fixes
 
 ### 💡 Others
+
+## 56.0.0 — 2026-05-05
+
+### 🎉 New features
+
+- Add option to `resolveFrom` to skip `NODE_PATH` resolution ([#45164](https://github.com/expo/expo/pull/45164) by [@kitten](https://github.com/kitten))
 
 ## 55.0.5 - 2026-05-05
 
