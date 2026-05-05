@@ -728,6 +728,9 @@ function getBabelTransformArgs(
     options: {
       ...babelTransformerOptions,
       enableBabelRCLookup: config.enableBabelRCLookup,
+      // NOTE(@kitten): Hint for babel transformer on where to look up Babel config from
+      extendsBabelConfigPath:
+        config.enableBabelRCLookup !== false ? config.extendsBabelConfigPath : undefined,
       // NOTE(@kitten): This shouldn't be relevant via this code path. However, in case it does,
       // this prevents us from adding imports/requires to @babel/runtime when we're transforming a script
       enableBabelRuntime: options.type === 'script' ? false : config.enableBabelRuntime,
@@ -802,7 +805,10 @@ export async function transform(
   return transformJSWithBabel(file, context);
 }
 
-export function getCacheKey(config: JsTransformerConfig): string {
+export function getCacheKey(
+  config: JsTransformerConfig,
+  opts?: Readonly<{ projectRoot: string }>
+): string {
   const {
     // The `expo_customTransformerPath` from `./supervising-transform-worker` should not participate be part of the cache key
     expo_customTransformerPath: _customTransformerPath,
@@ -824,12 +830,19 @@ export function getCacheKey(config: JsTransformerConfig): string {
     ...metroTransformPlugins.getTransformPluginCacheKeyFiles(),
   ]);
 
-  const babelTransformer = require(babelTransformerPath);
-  return [
-    filesKey,
-    stableHash(remainingConfig).toString('hex'),
-    babelTransformer.getCacheKey ? babelTransformer.getCacheKey() : '',
-  ].join('$');
+  const babelTransformer: BabelTransformer = require(babelTransformerPath);
+  const babelTransformerCacheKey = babelTransformer.getCacheKey
+    ? babelTransformer.getCacheKey({
+        projectRoot: opts?.projectRoot,
+        enableBabelRCLookup: config.enableBabelRCLookup,
+        // NOTE(@kitten): Custom modification to pass this custom Babel resolution option to `getCacheKey` for consistency
+        extendsBabelConfigPath: config.extendsBabelConfigPath,
+      })
+    : '';
+
+  return [filesKey, stableHash(remainingConfig).toString('hex'), babelTransformerCacheKey].join(
+    '$'
+  );
 }
 
 /**
