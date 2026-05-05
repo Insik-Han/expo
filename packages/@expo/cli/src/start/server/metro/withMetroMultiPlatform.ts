@@ -36,8 +36,6 @@ import { withMetroMutatedResolverContext, withMetroResolvers } from './withMetro
 import { withMetroSupervisingTransformWorker } from './withMetroSupervisingTransformWorker';
 import { Log } from '../../../log';
 import { env } from '../../../utils/env';
-import { CommandError } from '../../../utils/errors';
-import { resolveWatchFolders } from '../../../utils/resolveWatchFolders';
 import { isServerEnvironment } from '../middleware/metroOptions';
 import type { PlatformBundlers } from '../platformBundlers';
 import { createTypescriptResolver } from './createTypescriptResolver';
@@ -869,7 +867,6 @@ export async function withMetroMultiPlatformAsync(
     config,
     exp,
     platformBundlers,
-    serverRoot,
 
     isTsconfigPathsEnabled,
     isAutolinkingResolverEnabled,
@@ -895,45 +892,22 @@ export async function withMetroMultiPlatformAsync(
   const watchFolders = (config.watchFolders as string[]) || [];
   asWritable(config).watchFolders = watchFolders;
 
+  // NOTE(@kitten): If the on-demand filesystem is enabled, we can aggressively cut down the `watchFolders`
+  // to a minimum, since the files will be read lazily. This almost always speeds up exports
+  if (isExporting && !!config.resolver.unstable_onDemandFilesystem) {
+    watchFolders.length = 0;
+    watchFolders.push(projectRoot);
+  }
+
   // Change the default metro-runtime to a custom one that supports bundle splitting.
   // NOTE(@kitten): This is now always active and EXPO_USE_METRO_REQUIRE / isNamedRequiresEnabled is disregarded
   const metroDefaults: typeof import('@expo/metro/metro-config/defaults/defaults') = require('@expo/metro/metro-config/defaults/defaults');
   const metroRequirePolyfill = require.resolve('@expo/cli/build/metro-require/require');
-  const metroOriginalModuleSystem = metroDefaults.moduleSystem;
   asWritable(metroDefaults).moduleSystem = metroRequirePolyfill;
   watchFolders.push(path.dirname(metroRequirePolyfill));
 
   // Required for @expo/metro-runtime to format paths in the web LogBox.
   process.env.EXPO_PUBLIC_PROJECT_ROOT = process.env.EXPO_PUBLIC_PROJECT_ROOT ?? projectRoot;
-
-  // This is used for running Expo CLI in development against projects outside the monorepo.
-  // NOTE(@kitten): If `projectRoot` is used without `serverRoot` being available this can mistrigger for user monorepos!
-  if (!isDirectoryIn(__dirname, serverRoot ?? projectRoot)) {
-    let reactNativePolyfills: string[] = [];
-
-    // Support web-only `expo start`
-    if (exp.platforms?.includes('ios') || exp.platforms?.includes('android')) {
-      try {
-        reactNativePolyfills = require('react-native/rn-get-polyfills')();
-        watchFolders.push(...resolveWatchFolders('react-native', { deep: false }));
-      } catch (error) {
-        // If the project targets native platforms, react-native is required.
-        throw new CommandError(
-          'REACT_NATIVE_NOT_FOUND',
-          'Failed to resolve react-native. Make sure it is installed in the project dependencies. Remove native platforms from the Expo config if you do not intend to target native platforms.'
-        );
-      }
-    }
-
-    watchFolders.push(
-      ...resolveWatchFolders('expo', { deep: true }),
-      ...resolveWatchFolders('@expo/metro', { deep: true }),
-      ...resolveWatchFolders('@expo/metro-runtime', { deep: true }),
-      ...[config.resolver.emptyModulePath, metroOriginalModuleSystem, ...reactNativePolyfills]
-        .map((targetPath) => (fs.existsSync(targetPath) ? path.dirname(targetPath) : null))
-        .filter((targetPath) => targetPath != null)
-    );
-  }
 
   let expoConfigPlatforms = Object.entries(platformBundlers)
     .filter(
@@ -964,10 +938,6 @@ export async function withMetroMultiPlatformAsync(
     isReactServerComponentsEnabled,
     getMetroBundler,
   });
-}
-
-function isDirectoryIn(targetPath: string, rootPath: string) {
-  return targetPath.startsWith(rootPath) && targetPath.length >= rootPath.length;
 }
 
 function hasExpoRouterModule(
