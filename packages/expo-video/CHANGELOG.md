@@ -10,6 +10,8 @@
 
 ### 🐛 Bug fixes
 
+- Fix `PictureInPictureHelperFragment` crashes on restoration after process death. ([#45426](https://github.com/expo/expo/pull/45426) by [@behenate](https://github.com/behenate) and [@dive](https://github.com/dive))
+
 ### 💡 Others
 
 ## 56.0.2 — 2026-05-06
