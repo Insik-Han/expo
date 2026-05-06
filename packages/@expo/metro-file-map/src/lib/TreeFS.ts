@@ -12,7 +12,7 @@ import path from 'path';
 import H from '../constants';
 import normalizePathSeparatorsToPosix from './normalizePathSeparatorsToPosix';
 import normalizePathSeparatorsToSystem from './normalizePathSeparatorsToSystem';
-import { shouldFallbackCrawlDir } from '../crawlers/node/fallback';
+import { isFallbackDir, shouldFallbackCrawlDir } from '../crawlers/node/fallback';
 import type {
   CacheData,
   FallbackFilesystem,
@@ -641,6 +641,9 @@ export default class TreeFS implements MutableFileSystem {
     let targetNormalPath = requestedNormalPath;
     // Lazy-initialised set of seen target paths, to detect symlink cycles.
     let seen: Set<string> | undefined;
+    // Set when a symlink is followed, to allow fallback population outside
+    // the boundary for paths reachable transitively through symlinks.
+    let followedSymlink = false;
     // Pointer to the first character of the current path segment in
     // targetNormalPath.
     let fromIdx = opts.start?.pathIdx ?? 0;
@@ -692,7 +695,8 @@ export default class TreeFS implements MutableFileSystem {
             segmentNode = this.#populateFromFilesystem(
               parentNode,
               segmentName,
-              parentCanonicalPath
+              parentCanonicalPath,
+              followedSymlink
             );
             if (segmentNode != null) {
               ancestorOfRootIdx = null;
@@ -858,6 +862,7 @@ export default class TreeFS implements MutableFileSystem {
           };
         }
         seen.add(targetNormalPath);
+        followedSymlink = true;
         fromIdx = 0;
         parentNode = this.#rootNode;
         ancestorOfRootIdx = 0;
@@ -1185,7 +1190,7 @@ export default class TreeFS implements MutableFileSystem {
       const canonicalRoot = opts.canonicalPathOfRoot;
       const rootCanonical =
         pathPrefix === '' ? canonicalRoot : canonicalRoot + path.sep + pathPrefix;
-      this.#populateDirFromFilesystem(iterationRootNode, rootCanonical, false);
+      this.#populateDirFromFilesystem(iterationRootNode, rootCanonical, false, false);
     }
 
     for (const [name, node] of this.#directoryNodeIterator(
@@ -1256,7 +1261,7 @@ export default class TreeFS implements MutableFileSystem {
             opts.canonicalPathOfRoot === ''
               ? nodePathWithSystemSeparators
               : opts.canonicalPathOfRoot + path.sep + nodePathWithSystemSeparators;
-          this.#populateDirFromFilesystem(node, canonicalPath, false);
+          this.#populateDirFromFilesystem(node, canonicalPath, false, false);
         }
         yield* this.#pathIterator(
           node,
@@ -1376,7 +1381,11 @@ export default class TreeFS implements MutableFileSystem {
     return clone;
   }
 
-  #isOutsideFallbackBoundary(canonicalPath: string): boolean {
+  #isOutsideFallbackBoundary(canonicalPath: string, dirNode: DirectoryNode): boolean {
+    // We allow any directory that's already been crawled
+    if (isFallbackDir(dirNode)) {
+      return false;
+    }
     const maxDepth = this.#fallbackBoundaryDepth;
     return maxDepth != null && getAncestorOfRootIdx(canonicalPath) > maxDepth;
   }
@@ -1386,26 +1395,33 @@ export default class TreeFS implements MutableFileSystem {
    * fallback filesystem. The fallback returns tree-compatible nodes
    * (FileMetadata tuples or directory Maps) that are inserted directly.
    *
+   * Accepts `wasFollowing` to allow traversal on symlinks that were followed.
+   * If we're resolving a symlink target, we allow the lookup to escape the
+   * fallback scope.
+   *
    * Returns the newly created node, or null if the path doesn't exist on disk.
    */
   #populateFromFilesystem(
     parentNode: DirectoryNode,
     segmentName: string,
-    parentCanonicalPath: string
+    parentCanonicalPath: string,
+    wasFollowing: boolean
   ): MixedNode | null {
     const fallback = this.#fallbackFilesystem;
     if (fallback == null) {
       return null;
     }
+    // A symlink traversal (wasFollowing) or a parent created by the fallback
+    // (isFallbackDir) lets us skip the boundary check.
     const childCanonicalPath =
       parentCanonicalPath === '' ? segmentName : parentCanonicalPath + path.sep + segmentName;
     if (
       this.#rootPattern?.test(childCanonicalPath + path.sep) ||
-      this.#isOutsideFallbackBoundary(childCanonicalPath)
+      (!wasFollowing && this.#isOutsideFallbackBoundary(childCanonicalPath, parentNode))
     ) {
       return null;
     } else if (parentCanonicalPath !== '' && shouldFallbackCrawlDir(parentCanonicalPath)) {
-      this.#populateDirFromFilesystem(parentNode, parentCanonicalPath, true);
+      this.#populateDirFromFilesystem(parentNode, parentCanonicalPath, true, wasFollowing);
       return parentNode.get(segmentName) ?? null;
     } else if (parentNode.has(segmentName)) {
       return parentNode.get(segmentName) ?? null;
@@ -1427,14 +1443,15 @@ export default class TreeFS implements MutableFileSystem {
   #populateDirFromFilesystem(
     dirNode: DirectoryNode,
     canonicalPath: string,
-    skipCheck: boolean
+    skipCheck: boolean,
+    wasFollowed: boolean
   ): void {
     const fallback = this.#fallbackFilesystem;
     if (
       fallback == null ||
       (!skipCheck &&
         (this.#rootPattern?.test(canonicalPath + path.sep) ||
-          this.#isOutsideFallbackBoundary(canonicalPath)))
+          (!wasFollowed && this.#isOutsideFallbackBoundary(canonicalPath, dirNode))))
     ) {
       return;
     }
