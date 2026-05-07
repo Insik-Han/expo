@@ -3856,7 +3856,7 @@ EXTERNAL SOURCES:
   RNReanimated:
     :path: "../../../node_modules/.pnpm/react-native-reanimated@4.3.0_patch_hash=1e34e4238541638db96b94d5a2e974e73f3b801788a3d8_c36a92bb9a27c676b0bae54fbc6a1908/node_modules/react-native-reanimated"
   RNScreens:
-    :path: "../../../node_modules/.pnpm/react-native-screens@4.25.0-beta.1_react-native@0.85.3_@babel+core@7.29.0_@react-native_1106fa305397b6dce5495e57c42d635a/node_modules/react-native-screens"
+    :path: "../../../node_modules/.pnpm/react-native-screens@4.25.0-beta.3_react-native@0.85.3_@babel+core@7.29.0_@react-native_d946f5d10f696c25c0f95066694ac89d/node_modules/react-native-screens"
   RNSVG:
     :path: "../../../node_modules/.pnpm/react-native-svg@15.15.4_react-native@0.85.3_@babel+core@7.29.0_@react-native+jest-pres_492c03827e778ae24445fe49da301b55/node_modules/react-native-svg"
   RNWorklets:
@@ -4054,7 +4054,7 @@ SPEC CHECKSUMS:
   RNDateTimePicker: b9e20c2a3af26f4ab10646359777205bbad1fdac
   RNGestureHandler: c84901d120acdae2f6f27b5889a7cf144e64e6ec
   RNReanimated: b64e22b2ee046cd2dcb2a25d134eff25f64eba0d
-  RNScreens: c476f5f41b7c4ddce3e73f838c23d40c5e33384c
+  RNScreens: 9d8bbdc7185cc51e594567e50d87c674ccee3e9c
   RNSVG: 04044c3abcf177fd674a1a3d13097efa1adebcbe
   RNWorklets: edcd0af162eba9fb81af89a4761f1af35086d1cc
   TestExpoUi: e376582270047f880c7e44afc7f912c97b14da54
