@@ -6,9 +6,15 @@
 
 ### 🎉 New features
 
-- export useRoute hook from expo-router ([#45557](https://github.com/expo/expo/pull/45557) by [@Ubax](https://github.com/Ubax))
-
 ### 🐛 Bug fixes
+
+### 💡 Others
+
+## 56.1.1 — 2026-05-08
+
+### 🎉 New features
+
+- export useRoute hook from expo-router ([#45557](https://github.com/expo/expo/pull/45557) by [@Ubax](https://github.com/Ubax))
 
 ### 💡 Others
 

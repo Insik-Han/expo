@@ -8,9 +8,13 @@
 
 ### 🐛 Bug fixes
 
-- Fix error overlay footer overlapping content by using fixed positioning and adding bottom padding. ([#45526](https://github.com/expo/expo/pull/45526) by [@EvanBacon](https://github.com/EvanBacon))
-
 ### 💡 Others
+
+## 56.0.6 — 2026-05-08
+
+### 🐛 Bug fixes
+
+- Fix error overlay footer overlapping content by using fixed positioning and adding bottom padding. ([#45526](https://github.com/expo/expo/pull/45526) by [@EvanBacon](https://github.com/EvanBacon))
 
 ## 56.0.5 — 2026-05-07
 

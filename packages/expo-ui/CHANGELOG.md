@@ -10,6 +10,10 @@
 
 ### 💡 Others
 
+## 56.0.4 — 2026-05-08
+
+### 💡 Others
+
 - [universal] Refactored web components to use `StyleSheet.create` instead of inline styles, added `react-native-web` type declarations, and tightened prop handling. ([#45485](https://github.com/expo/expo/pull/45485) by [@zoontek](https://github.com/zoontek))
 
 ## 56.0.3 — 2026-05-07

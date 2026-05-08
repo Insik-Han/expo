@@ -10,6 +10,10 @@
 
 ### 💡 Others
 
+## 56.0.6 — 2026-05-08
+
+### 💡 Others
+
 - Add runtime version header to asset requests. ([#45465](https://github.com/expo/expo/pull/45465) by [@douglowder](https://github.com/douglowder))
 
 ## 56.0.5 — 2026-05-07

@@ -10,6 +10,10 @@
 
 ### 💡 Others
 
+## 56.0.5 — 2026-05-08
+
+### 💡 Others
+
 - Remove pinned dependencies ([#45520](https://github.com/expo/expo/pull/45520) by [@kitten](https://githun.com/kitten))
 
 ## 56.0.4 — 2026-05-07

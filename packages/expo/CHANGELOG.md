@@ -8,6 +8,12 @@
 
 ### 🐛 Bug fixes
 
+### 💡 Others
+
+## 56.0.0-preview.7 — 2026-05-08
+
+### 🐛 Bug fixes
+
 - Bump to `whatwg-url-minimum@0.1.2` to fix missing `Symbol.toStringTag`s on `URL` and `URLSearchParams` ([#45521](https://github.com/expo/expo/pull/45521) by [@kitten](https://github.com/kitten))
 
 ### 💡 Others

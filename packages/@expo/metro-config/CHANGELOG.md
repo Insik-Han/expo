@@ -10,6 +10,10 @@
 
 ### 💡 Others
 
+## 56.0.5 — 2026-05-08
+
+### 💡 Others
+
 - Thread `excludeSource` through to source map serialization ([#45507](https://github.com/expo/expo/pull/45507) by [@kitten](https://github.com/kitten))
 - Rename cache then asynchronously delete to remove `--clear` penalty ([#45553](https://github.com/expo/expo/pull/45553) by [@kitten](https://github.com/kitten))
 
