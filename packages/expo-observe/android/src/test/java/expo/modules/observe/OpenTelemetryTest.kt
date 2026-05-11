@@ -476,3 +476,48 @@ class OpenTelemetryTest {
     assertEquals(testSessionId, sessionAttr["value"]!!.jsonObject["stringValue"]!!.jsonPrimitive.content)
   }
 }
+
+/**
+ * Test-only convenience for pulling the inner string out of an [OTAnyValue].
+ * Returns `null` for non-string variants — the metric tests in this file only
+ * produce string-valued attributes, so a null result is a real assertion
+ * failure.
+ */
+internal val OTAnyValue.stringValue: String?
+  get() = (this as? OTAnyValue.Str)?.value
+
+@RunWith(RobolectricTestRunner::class)
+@Config(manifest = Config.NONE, sdk = [28])
+class LogEventToOTLogRecordTest {
+  private fun makeLog(severity: String): LogEvent =
+    LogEvent(
+      sessionId = "session-1",
+      timestamp = "2025-01-01T00:00:00.000Z",
+      name = "auth.login_failed",
+      body = "invalid_credentials",
+      severity = severity,
+      attributes = null,
+      droppedAttributesCount = 0
+    )
+
+  @Test
+  fun `renders severityText and severityNumber consistently for known cases`() {
+    val warn = makeLog(severity = "warn").toOTLogRecord()
+    assertEquals("WARN", warn.severityText)
+    assertEquals(13, warn.severityNumber)
+
+    val error = makeLog(severity = "error").toOTLogRecord()
+    assertEquals("ERROR", error.severityText)
+    assertEquals(17, error.severityNumber)
+  }
+
+  @Test
+  fun `falls back to INFO consistently for an unknown severity string`() {
+    // The previous code uppercased the raw value verbatim while the number
+    // path fell back to 9, producing internally-inconsistent records like
+    // (severityText="FROBNICATE", severityNumber=9). This pins the fix.
+    val ot = makeLog(severity = "frobnicate").toOTLogRecord()
+    assertEquals("INFO", ot.severityText)
+    assertEquals(9, ot.severityNumber)
+  }
+}
