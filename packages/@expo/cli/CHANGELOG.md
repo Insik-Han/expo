@@ -8,6 +8,8 @@
 
 ### 🐛 Bug fixes
 
+- Fix regression hiding stderr output on fatal exit ([#45641](https://github.com/expo/expo/pull/45641) by [@kitten](https://github.com/kitten))
+
 ### 💡 Others
 
 - Deserialize new `@expo/metro-config` packed source-map format and update to use new source-map representation internally ([#45594](https://github.com/expo/expo/pull/45594) by [@kitten](https://github.com/kitten))
