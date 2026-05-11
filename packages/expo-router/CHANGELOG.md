@@ -8,6 +8,8 @@
 
 ### 🐛 Bug fixes
 
+- Fix drawer toggle asset path. ([#45170](https://github.com/expo/expo/pull/45170) by [@sleda](https://github.com/sleda))
+
 ### 💡 Others
 
 ## 56.1.1 — 2026-05-08
