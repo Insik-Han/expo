@@ -6,12 +6,16 @@
 
 ### 🎉 New features
 
-- Skip `watchFolders` check for SDK 56 ([#45567](https://github.com/expo/expo/pull/45567) by [@kitten](https://github.com/kitten))
-- Warn when `blacklistRE` or invalid `blockList` regex are used ([#45567](https://github.com/expo/expo/pull/45567) by [@kitten](https://github.com/kitten))
-
 ### 🐛 Bug fixes
 
 ### 💡 Others
+
+## 1.19.6 — 2026-05-11
+
+### 🎉 New features
+
+- Skip `watchFolders` check for SDK 56 ([#45567](https://github.com/expo/expo/pull/45567) by [@kitten](https://github.com/kitten))
+- Warn when `blacklistRE` or invalid `blockList` regex are used ([#45567](https://github.com/expo/expo/pull/45567) by [@kitten](https://github.com/kitten))
 
 ## 1.19.5 — 2026-05-06
 

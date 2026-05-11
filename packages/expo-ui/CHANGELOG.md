@@ -6,9 +6,15 @@
 
 ### 🎉 New features
 
-- [iOS] Added the `scrollIndicators(visibility, axes?)` SwiftUI modifier in `@expo/ui/swift-ui/modifiers`, wrapping SwiftUI's `scrollIndicators(_:axes:)`. ([#45649](https://github.com/expo/expo/pull/45649) by [@vonovak](https://github.com/vonovak))
-
 ### 🐛 Bug fixes
+
+### 💡 Others
+
+## 56.0.5 — 2026-05-11
+
+### 🎉 New features
+
+- [iOS] Added the `scrollIndicators(visibility, axes?)` SwiftUI modifier in `@expo/ui/swift-ui/modifiers`, wrapping SwiftUI's `scrollIndicators(_:axes:)`. ([#45649](https://github.com/expo/expo/pull/45649) by [@vonovak](https://github.com/vonovak))
 
 ### 💡 Others
 
