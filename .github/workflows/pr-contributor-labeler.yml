@@ -48,13 +48,14 @@ jobs:
               return;
             }
 
-            // Internal authors (expo org members, owners, repo collaborators) get
-            // no labels. We rely on `author_association` from the webhook payload
-            // rather than the org-membership API because the bot token can only
-            // see *public* org members, which would mislabel ~70% of the team.
+            // We rely on `author_association` from the webhook payload rather
+            // than the org-membership API because the bot token can only see
+            // *public* org members, which would mislabel ~70% of the team.
             const INTERNAL = new Set(['MEMBER', 'OWNER', 'COLLABORATOR']);
             if (INTERNAL.has(pr.author_association)) {
-              core.info(`${username} is internal (${pr.author_association}) — no labels applied`);
+              core.info(`${username} is internal (${pr.author_association})`);
+              await applyLabel('contributor: internal', 'b6f3a4',
+                'PR author is a member, owner, or collaborator of the expo org');
               return;
             }
 
