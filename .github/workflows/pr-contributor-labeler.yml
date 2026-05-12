@@ -48,6 +48,16 @@ jobs:
               return;
             }
 
+            // Internal authors (expo org members, owners, repo collaborators) get
+            // no labels. We rely on `author_association` from the webhook payload
+            // rather than the org-membership API because the bot token can only
+            // see *public* org members, which would mislabel ~70% of the team.
+            const INTERNAL = new Set(['MEMBER', 'OWNER', 'COLLABORATOR']);
+            if (INTERNAL.has(pr.author_association)) {
+              core.info(`${username} is internal (${pr.author_association}) — no labels applied`);
+              return;
+            }
+
             async function isMember(org, user) {
               try {
                 await github.rest.orgs.checkMembershipForUser({ org, username: user });
@@ -75,11 +85,6 @@ jobs:
                 issue_number: pr.number,
                 labels: [name],
               });
-            }
-
-            if (await isMember('expo', username)) {
-              core.info(`${username} is in the expo org — no labels applied`);
-              return;
             }
 
             await applyLabel('contributor: external', 'ededed',
