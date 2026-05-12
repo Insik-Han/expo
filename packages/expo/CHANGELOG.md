@@ -10,6 +10,10 @@
 
 ### 💡 Others
 
+## 56.0.0-preview.9 — 2026-05-12
+
+_This version does not introduce any user-facing changes._
+
 ## 56.0.0-preview.8 — 2026-05-11
 
 ### 🐛 Bug fixes
