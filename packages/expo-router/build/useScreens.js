@@ -286,14 +286,18 @@ function AnalyticsListeners({ navigation, screenId, }) {
         return () => { };
     }, [routeInfo?.params, routeInfo?.pathname, screenId]);
     const isFocused = navigation.isFocused();
-    if (isFocused && routeInfo) {
-        navigationEvents_1.unstable_navigationEvents.emit('pageFocused', {
-            pathname: routeInfo.pathname,
-            params: routeInfo.params,
-            screenId,
-        });
-        hasBlurredRef.current = false;
-    }
+    // Emit `pageFocused` from an effect — not during render — so it fires after the
+    // focused screen's content has committed. `hasBlurredRef` deduplicates across both paths.
+    (0, react_2.useEffect)(() => {
+        if (isFocused && routeInfo && hasBlurredRef.current) {
+            navigationEvents_1.unstable_navigationEvents.emit('pageFocused', {
+                pathname: routeInfo.pathname,
+                params: routeInfo.params,
+                screenId,
+            });
+            hasBlurredRef.current = false;
+        }
+    }, [isFocused, routeInfo?.pathname, routeInfo?.params, screenId]);
     (0, react_2.useEffect)(() => {
         if (routeInfo) {
             const cleanFocus = navigation.addListener('focus', () => {
