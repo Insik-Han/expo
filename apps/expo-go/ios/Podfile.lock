@@ -167,7 +167,7 @@ PODS:
     - ExpoModulesCore
   - ExpoLinearGradient (56.0.4):
     - ExpoModulesCore
-  - ExpoLinking (56.0.5):
+  - ExpoLinking (56.0.6):
     - ExpoModulesCore
   - ExpoLocalAuthentication (56.0.3):
     - ExpoModulesCore
@@ -4672,7 +4672,7 @@ SPEC CHECKSUMS:
   ExpoImagePicker: a41820d4804891c7bca2c0799d3cdaec9763e20d
   ExpoKeepAwake: 359c47a1d9ccc3a3c519bca6e39562cce230c5bb
   ExpoLinearGradient: 16c2b9c6105444883d34958d573725de1293b8d0
-  ExpoLinking: 5fe73159a975396b5753a90dcd644f91d4997083
+  ExpoLinking: 04f9f1792a62699d115ba25fcbbf7136f69acdf5
   ExpoLocalAuthentication: 64e8c5756df07c8a89f078293ec17899c1325a43
   ExpoLocalization: 18a218aa883b7bf46ee3d18d912631ed3348b560
   ExpoLocation: d229c77aca2d775db25f8774ce1ff64e568d02b5
