@@ -89,7 +89,7 @@
   ],
   "peerDependencies": {
     "@expo/log-box": "workspace:^56.0.9",
-    "@expo/metro-runtime": "workspace:^56.0.7",
+    "@expo/metro-runtime": "workspace:^56.0.8",
     "@testing-library/react-native": ">= 13.2.0",
     "expo": "*",
     "expo-constants": "workspace:^56.0.10",
@@ -150,7 +150,7 @@
   },
   "dependencies": {
     "@expo/log-box": "workspace:^56.0.9",
-    "@expo/metro-runtime": "workspace:^56.0.7",
+    "@expo/metro-runtime": "workspace:^56.0.8",
     "@expo/schema-utils": "workspace:^56.0.0",
     "@expo/ui": "workspace:^56.0.7",
     "@radix-ui/react-slot": "^1.2.0",

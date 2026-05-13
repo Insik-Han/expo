@@ -1,6 +1,6 @@
 {
   "@expo/fingerprint": "~0.18.1",
-  "@expo/metro-runtime": "~56.0.7",
+  "@expo/metro-runtime": "~56.0.8",
   "@expo/vector-icons": "^15.0.2",
   "@expo/ui": "~56.0.7",
   "@react-native-async-storage/async-storage": "2.2.0",
@@ -64,7 +64,7 @@
   "expo-mcp": "~0.2.1",
   "expo-media-library": "~56.0.4",
   "expo-mesh-gradient": "~56.0.3",
-  "expo-module-template": "~56.0.5",
+  "expo-module-template": "~56.0.6",
   "expo-modules-core": "~56.0.8",
   "expo-navigation-bar": "~56.0.3",
   "expo-network": "~56.0.3",
