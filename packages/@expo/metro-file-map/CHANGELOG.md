@@ -8,6 +8,8 @@
 
 ### 🐛 Bug fixes
 
+- Fix `'..'` at root handling to align with Metro ([#45687](https://github.com/expo/expo/pull/45687) by [@kitten](https://github.com/kitten))
+
 ### 💡 Others
 
 - Forcefully exclude `.cxx/` folders from file discovery and watchers ([#45722](https://github.com/expo/expo/pull/45722) by [@kitten](https://github.com/kitten))
