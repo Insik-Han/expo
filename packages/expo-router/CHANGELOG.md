@@ -6,6 +6,14 @@
 
 ### 🎉 New features
 
+### 🐛 Bug fixes
+
+### 💡 Others
+
+## 56.2.0 — 2026-05-13
+
+### 🎉 New features
+
 - add `disabled` prop to native tab triggers ([#45671](https://github.com/expo/expo/pull/45671) by [@Ubax](https://github.com/Ubax))
 - Add `tabBarRespectsIMEInsets` Android property to `NativeTabs` ([#45679](https://github.com/expo/expo/pull/45679) by [@Ubax](https://github.com/Ubax))
 
