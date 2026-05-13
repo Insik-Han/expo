@@ -51,7 +51,7 @@ _This version does not introduce any user-facing changes._
 ### 💡 Others
 
 - Remove pinned dependencies ([#45520](https://github.com/expo/expo/pull/45520) by [@kitten](https://githun.com/kitten))
-
+- Move `pointerEvents` from component prop to style property in react-navigation views. ([#45519](https://github.com/expo/expo/pull/45519) by [@EvanBacon](https://github.com/EvanBacon))
 ## 56.1.0 — 2026-05-07
 
 ### 🎉 New features
