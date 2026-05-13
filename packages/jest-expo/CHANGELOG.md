@@ -8,6 +8,12 @@
 
 ### 🐛 Bug fixes
 
+### 💡 Others
+
+## 56.0.1 — 2026-05-13
+
+### 🐛 Bug fixes
+
 - Switch from `react-native/jest-preset` to `@react-native/jest-preset` ([#45699](https://github.com/expo/expo/pull/45699) by [@kitten](https://github.com/kitten))
 
 ### 💡 Others

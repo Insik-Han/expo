@@ -6,9 +6,15 @@
 
 ### 🎉 New features
 
-- Add a name to injected suspense boundaries for easier debugging ([#45501](https://github.com/expo/expo/pull/45501) by [@rubennorte](https://github.com/rubennorte))
-
 ### 🐛 Bug fixes
+
+### 💡 Others
+
+## 56.1.4 — 2026-05-13
+
+### 🎉 New features
+
+- Add a name to injected suspense boundaries for easier debugging ([#45501](https://github.com/expo/expo/pull/45501) by [@rubennorte](https://github.com/rubennorte))
 
 ### 💡 Others
 

@@ -8,9 +8,13 @@
 
 ### 🐛 Bug fixes
 
-- Fix FAB safe-area bounds ([#45647](https://github.com/expo/expo/pull/45647) by [@Wenszel](https://github.com/Wenszel))
-
 ### 💡 Others
+
+## 56.0.7 — 2026-05-13
+
+### 🐛 Bug fixes
+
+- Fix FAB safe-area bounds ([#45647](https://github.com/expo/expo/pull/45647) by [@Wenszel](https://github.com/Wenszel))
 
 ## 56.0.6 — 2026-05-11
 
