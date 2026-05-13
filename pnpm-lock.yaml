@@ -4104,10 +4104,10 @@ importers:
   packages/expo-dev-client:
     dependencies:
       expo-dev-launcher:
-        specifier: workspace:~56.0.8
+        specifier: workspace:~56.0.9
         version: link:../expo-dev-launcher
       expo-dev-menu:
-        specifier: workspace:~56.0.7
+        specifier: workspace:~56.0.8
         version: link:../expo-dev-menu
       expo-dev-menu-interface:
         specifier: workspace:~56.0.0
@@ -4138,7 +4138,7 @@ importers:
         specifier: workspace:^56.0.0
         version: link:../@expo/schema-utils
       expo-dev-menu:
-        specifier: workspace:~56.0.7
+        specifier: workspace:~56.0.8
         version: link:../expo-dev-menu
       expo-manifests:
         specifier: workspace:~56.0.3
