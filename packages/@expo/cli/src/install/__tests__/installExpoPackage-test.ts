@@ -1,5 +1,6 @@
 import * as PackageManager from '@expo/package-manager';
 import spawnAsync from '@expo/spawn-async';
+import fs from 'node:fs';
 
 import { Log } from '../../log';
 import { installExpoPackageAsync } from '../installExpoPackage';
@@ -83,5 +84,59 @@ describe(installExpoPackageAsync, () => {
     });
     expect(packageManager.addAsync).toHaveBeenCalledWith(['expo@latest']);
     expect(spawnAsync).not.toHaveBeenCalled();
+  });
+
+  it(`Does not spawn follow-up command when installed version does not satisfy expected range`, async () => {
+    // Simulate a package manager age gate (e.g., pnpm minimumReleaseAge / Yarn npmMinimalAgeGate)
+    // that silently blocks the installation, leaving the old version in place.
+    jest.spyOn(fs, 'readFileSync').mockReturnValueOnce(JSON.stringify({ version: '53.0.9' }));
+
+    const packageManager = PackageManager.createForProject('/path/to/project');
+    await expect(
+      installExpoPackageAsync('/path/to/project', {
+        packageManager,
+        packageManagerArguments: [],
+        expoPackageToInstall: 'expo@53.0.10',
+        followUpCommandArgs: ['--fix'],
+      })
+    ).rejects.toThrow('Failed to update');
+
+    expect(packageManager.addAsync).toHaveBeenCalledWith(['expo@53.0.10']);
+    expect(spawnAsync).not.toHaveBeenCalled();
+  });
+
+  it(`Spawns follow-up command when installed version satisfies expected range`, async () => {
+    jest.spyOn(fs, 'readFileSync').mockReturnValueOnce(JSON.stringify({ version: '53.0.10' }));
+
+    const packageManager = PackageManager.createForProject('/path/to/project');
+    await installExpoPackageAsync('/path/to/project', {
+      packageManager,
+      packageManagerArguments: [],
+      expoPackageToInstall: 'expo@~53.0.10',
+      followUpCommandArgs: ['--fix'],
+    });
+
+    expect(packageManager.addAsync).toHaveBeenCalledWith(['expo@~53.0.10']);
+    expect(spawnAsync).toHaveBeenCalledWith(
+      'npx',
+      ['expo', 'install', '--fix'],
+      expect.objectContaining({ cwd: '/path/to/project' })
+    );
+  });
+
+  it(`Spawns follow-up command when installed version cannot be determined`, async () => {
+    jest.spyOn(fs, 'readFileSync').mockImplementationOnce(() => {
+      throw new Error('ENOENT');
+    });
+
+    const packageManager = PackageManager.createForProject('/path/to/project');
+    await installExpoPackageAsync('/path/to/project', {
+      packageManager,
+      packageManagerArguments: [],
+      expoPackageToInstall: 'expo@53.0.10',
+      followUpCommandArgs: ['--fix'],
+    });
+
+    expect(spawnAsync).toHaveBeenCalled();
   });
 });

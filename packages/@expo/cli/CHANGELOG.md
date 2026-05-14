@@ -8,6 +8,8 @@
 
 ### 🐛 Bug fixes
 
+- Fix infinite follow-up loop in `expo install --fix` when a package manager minimum release age policy (e.g., pnpm `minimumReleaseAge`, npm `minimum-release-age`, or Yarn `npmMinimalAgeGate`) silently blocks the expo package update.
+
 ### 💡 Others
 
 - Add general `eslint-disable` comment to Router's type-gen output ([#41637](https://github.com/expo/expo/pull/41637) by [@matinzd](https://github.com/matinzd))

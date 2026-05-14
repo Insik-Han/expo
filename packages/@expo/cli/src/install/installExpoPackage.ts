@@ -1,9 +1,13 @@
 import type * as PackageManager from '@expo/package-manager';
 import spawnAsync from '@expo/spawn-async';
 import chalk from 'chalk';
+import fs from 'node:fs';
+import path from 'node:path';
+import semver from 'semver';
 
 import * as Log from '../log';
 import type { Options } from './resolveOptions';
+import { CommandError } from '../utils/errors';
 import { getRunningProcess } from '../utils/getRunningProcess';
 
 /**
@@ -56,6 +60,26 @@ export async function installExpoPackageAsync(
 
   // Spawn a new process to install the rest of the packages if there are any, as only then will the latest Expo package be used
   if (followUpCommandArgs.length) {
+    // Verify the installed expo version satisfies the expected range before spawning the
+    // follow-up command. Without this check, an infinite loop can occur when a package
+    // manager age gate (e.g., pnpm's `minimumReleaseAge`, npm's `minimum-release-age`, or
+    // Yarn's `npmMinimalAgeGate`) silently rejects the installation without throwing \u2014
+    // the follow-up `expo install --fix` would restart the cycle indefinitely.
+    const expectedRange = expoPackageToInstall.replace(/^expo@/, '');
+    if (semver.validRange(expectedRange)) {
+      const installedVersion = getInstalledPackageVersion(projectRoot, 'expo');
+      if (installedVersion && !semver.satisfies(installedVersion, expectedRange)) {
+        throw new CommandError(
+          'EXPO_PACKAGE_NOT_INSTALLED',
+          chalk`Failed to update {bold expo} to {bold ${expoPackageToInstall}} \u2014 installed version is {bold ${installedVersion}}. ` +
+            `Your package manager may be configured with a minimum release age policy ` +
+            chalk`(e.g., {bold minimumReleaseAge} in pnpm or npm, or {bold npmMinimalAgeGate} in Yarn) ` +
+            `that blocks newly-published versions. Run {bold npx expo install --fix} again once the quarantine period has passed, ` +
+            `or check your package manager configuration.`
+        );
+      }
+    }
+
     let commandSegments = ['expo', 'install', dev ? '--dev' : '', ...followUpCommandArgs].filter(
       Boolean
     );
@@ -71,5 +95,15 @@ export async function installExpoPackageAsync(
       cwd: projectRoot,
       env: { ...process.env },
     });
+  }
+}
+
+function getInstalledPackageVersion(projectRoot: string, packageName: string): string | null {
+  try {
+    const pkgJsonPath = path.join(projectRoot, 'node_modules', packageName, 'package.json');
+    const pkgJson = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
+    return pkgJson.version ?? null;
+  } catch {
+    return null;
   }
 }
