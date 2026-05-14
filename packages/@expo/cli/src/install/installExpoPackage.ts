@@ -2,7 +2,7 @@ import type * as PackageManager from '@expo/package-manager';
 import spawnAsync from '@expo/spawn-async';
 import chalk from 'chalk';
 import fs from 'node:fs';
-import path from 'node:path';
+import resolveFrom from 'resolve-from';
 import semver from 'semver';
 
 import * as Log from '../log';
@@ -60,11 +60,9 @@ export async function installExpoPackageAsync(
 
   // Spawn a new process to install the rest of the packages if there are any, as only then will the latest Expo package be used
   if (followUpCommandArgs.length) {
-    // Verify the installed expo version satisfies the expected range before spawning the
-    // follow-up command. Without this check, an infinite loop can occur when a package
-    // manager age gate (e.g., pnpm's `minimumReleaseAge`, npm's `minimum-release-age`, or
-    // Yarn's `npmMinimalAgeGate`) silently rejects the installation without throwing \u2014
-    // the follow-up `expo install --fix` would restart the cycle indefinitely.
+    // Guard against an infinite follow-up loop: if a package manager age gate (e.g., pnpm
+    // `minimumReleaseAge`, Yarn `npmMinimalAgeGate`) silently rejects the install without
+    // throwing, the old version remains and the respawned `expo install --fix` would loop.
     const expectedRange = expoPackageToInstall.replace(/^expo@/, '');
     if (semver.validRange(expectedRange)) {
       const installedVersion = getInstalledPackageVersion(projectRoot, 'expo');
@@ -100,9 +98,10 @@ export async function installExpoPackageAsync(
 
 function getInstalledPackageVersion(projectRoot: string, packageName: string): string | null {
   try {
-    const pkgJsonPath = path.join(projectRoot, 'node_modules', packageName, 'package.json');
-    const pkgJson = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
-    return pkgJson.version ?? null;
+    const pkgJsonPath = resolveFrom.silent(projectRoot, `${packageName}/package.json`);
+    if (!pkgJsonPath) return null;
+    const { version } = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'));
+    return version ?? null;
   } catch {
     return null;
   }

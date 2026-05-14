@@ -1,6 +1,7 @@
 import * as PackageManager from '@expo/package-manager';
 import spawnAsync from '@expo/spawn-async';
 import fs from 'node:fs';
+import resolveFrom from 'resolve-from';
 
 import { Log } from '../../log';
 import { installExpoPackageAsync } from '../installExpoPackage';
@@ -89,6 +90,7 @@ describe(installExpoPackageAsync, () => {
   it(`Does not spawn follow-up command when installed version does not satisfy expected range`, async () => {
     // Simulate a package manager age gate (e.g., pnpm minimumReleaseAge / Yarn npmMinimalAgeGate)
     // that silently blocks the installation, leaving the old version in place.
+    jest.spyOn(resolveFrom, 'silent').mockReturnValueOnce('/path/to/project/node_modules/expo/package.json');
     jest.spyOn(fs, 'readFileSync').mockReturnValueOnce(JSON.stringify({ version: '53.0.9' }));
 
     const packageManager = PackageManager.createForProject('/path/to/project');
@@ -106,6 +108,7 @@ describe(installExpoPackageAsync, () => {
   });
 
   it(`Spawns follow-up command when installed version satisfies expected range`, async () => {
+    jest.spyOn(resolveFrom, 'silent').mockReturnValueOnce('/path/to/project/node_modules/expo/package.json');
     jest.spyOn(fs, 'readFileSync').mockReturnValueOnce(JSON.stringify({ version: '53.0.10' }));
 
     const packageManager = PackageManager.createForProject('/path/to/project');
@@ -125,9 +128,7 @@ describe(installExpoPackageAsync, () => {
   });
 
   it(`Spawns follow-up command when installed version cannot be determined`, async () => {
-    jest.spyOn(fs, 'readFileSync').mockImplementationOnce(() => {
-      throw new Error('ENOENT');
-    });
+    jest.spyOn(resolveFrom, 'silent').mockReturnValueOnce(null);
 
     const packageManager = PackageManager.createForProject('/path/to/project');
     await installExpoPackageAsync('/path/to/project', {
